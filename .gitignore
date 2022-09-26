@@ -1,0 +1,8 @@
+.env
+requirements_list.txt
+dist/*
+webmap.egg-info/*
+tests/__pycache__/*
+__pycache__/*
+webmap/__pycache__/*
+build
