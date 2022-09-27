@@ -1,6 +1,7 @@
 import random
 import string
 from arcgis.mapping import MapServiceLayer
+from arcgis.mapping import WebMap
 
 
 def define_layer_names(urls, stub):
@@ -105,3 +106,11 @@ def group_layer(title):
     group_dict.update({"layerType": "GroupLayer"})
     group_dict.update({"title": title})
     return group_dict
+
+
+def clear(item):
+    map_item = WebMap(item)
+    map_layers = map_item.layers
+    for lyr in map_layers:
+        map_item.remove_layer(lyr)
+    map_item.update()
