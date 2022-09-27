@@ -1,6 +1,7 @@
 from webmap import webmap as w
 from webmap import urls as u
 from arcgis.mapping import MapServiceLayer
+import logging
 
 
 def missing_sidewalks_layer_names(post):
@@ -94,6 +95,8 @@ def missing_sidewalks_map(project_map, template):
     """
     basemap = w.group_layer("Missing Sidewalks Map")
     missing_sidewalks_layers(basemap, template)
+    logging.info("missing sidewalk layers assembled")
     map_def = project_map.get_data()
     map_def["operationalLayers"].append(basemap)
     project_map.update({"text": str(map_def)})
+    logging.info("missing sidewalk layers added to basemap")

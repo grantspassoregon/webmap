@@ -10,8 +10,17 @@ import arcgis
 from arcgis.gis import GIS
 from arcgis.mapping import MapServiceLayer
 from arcgis.mapping import WebMap
-
 from dotenv import load_dotenv
+import logging
+
+# format log messages to include time before message
+logging.basicConfig(
+    format="%(asctime)s %(message)s",
+    datefmt="%m/%d/%Y %I:%M:%S %p",
+    # filename="sidewalks.log",
+    level=logging.INFO,
+)
+
 
 load_dotenv()
 ARCGIS_USERNAME = os.getenv("ARCGIS_USERNAME")
@@ -19,6 +28,7 @@ ARCGIS_PASSWORD = os.getenv("ARCGIS_PASSWORD")
 API_KEY = os.getenv("API_KEY")
 CLIENT_ID = os.getenv("CLIENT_ID")
 PORTAL = "https://grantspassoregon.maps.arcgis.com/"
+logging.info("environmental variables loaded")
 
 gis = GIS(
     PORTAL,
@@ -26,7 +36,7 @@ gis = GIS(
     ARCGIS_PASSWORD,
     # api_key=API_KEY,
 )
-print("Logged in to " + gis.properties.name)
+logging.info("Logged in to " + gis.properties.name)
 
 
 def test_build_template():
