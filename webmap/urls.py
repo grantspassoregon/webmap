@@ -12,8 +12,52 @@ def expand_urls(stub, rng):
     return urls
 
 
-missing_sidewalks_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/missing_sidewalks_template_WFL1/FeatureServer/"
+missing_sidewalks_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/missing_sidewalks_service/FeatureServer/"
 # read this in reverse so it matches the order of operational layers in the .get_data() method
 # and the operational layers when building the template
-url_range = list(range(11, -1, -1))
+url_range = [11, 10, 9, 8, 7, 14, 15, 16, 17, 18, 19, 20, 0, 1, 2, 3, 4, 5, 6]
+
 missing_sidewalks_urls = expand_urls(missing_sidewalks_base, url_range)
+
+# regulatory boundaries
+
+plss_base = "https://gis.blm.gov/arcgis/rest/services/Cadastral/BLM_Natl_PLSS_CadNSDI/MapServer/"
+url_range = list(range(3, -1, -1))
+plss_urls = expand_urls(plss_base, url_range)
+
+# bia tribal lands
+
+bia_base = "https://arcgis.water.nv.gov/arcgis/rest/services/BaseLayers/BIA_Boundaries/MapServer/"
+url_range = [1, 0]
+bia_urls = expand_urls(bia_base, url_range)
+
+# aiannha tigerweb indian lands
+
+aiannha_base = (
+    "https://tigerweb.geo.census.gov/arcgis/rest/services/Census2020/AIANNHA/MapServer/"
+)
+url_range = [10, 9, 8, 4, 3, 2, 1]
+aiannha_urls = expand_urls(aiannha_base, url_range)
+
+# city boundaries
+
+boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
+url_range = list(range(7, -1, -1))
+boundaries_urls = expand_urls(boundaries_base, url_range)
+
+# school districts
+
+# josephine county
+school_locations = "https://gis.co.josephine.or.us/arcgis/rest/services/Planning/SchoolLocatons/MapServer/0"
+# elementary schools
+school_zones = "https://gis.co.josephine.or.us/arcgis/rest/services/Planning/School_Zones/MapServer/0"
+
+# city schools data
+school_districts_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/school_district/FeatureServer/"
+url_range = list(range(5, -1, -1))
+school_districts_urls = expand_urls(school_districts_base, url_range)
+# elementary, middle and high school zones
+school_districts_urls.insert(2, school_zones)
+school_districts_urls.insert(2, school_zones)
+school_districts_urls.insert(2, school_zones)
+school_districts_urls.append(school_locations)

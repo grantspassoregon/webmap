@@ -12,13 +12,14 @@ from arcgis.mapping import MapServiceLayer
 from arcgis.mapping import WebMap
 from dotenv import load_dotenv
 import logging
+import json
 
 # format log messages to include time before message
 logging.basicConfig(
     format="%(asctime)s %(message)s",
     datefmt="%m/%d/%Y %I:%M:%S %p",
     # filename="sidewalks.log",
-    level=logging.INFO,
+    level=logging.DEBUG,
 )
 
 
@@ -37,6 +38,8 @@ gis = GIS(
     # api_key=API_KEY,
 )
 logging.info("Logged in to " + gis.properties.name)
+# logging.info("Properties are ")
+# logging.info(gis.properties)
 
 
 def test_build_template():
@@ -48,6 +51,20 @@ def test_missing_sidewalks():
     template = t.build_template(gis)
     w.clear(test_map)
     m.missing_sidewalks_map(test_map, template)
+
+
+def test_city_basemap():
+    test_map = gis.content.get(r.TEST_CITY_BASEMAP)
+    template = t.build_template(gis)
+    w.clear(test_map)
+    m.city_basemap(test_map, template)
+
+
+def test_boundaries():
+    test_map = gis.content.get(r.TEST_BOUNDARIES)
+    template = t.build_template(gis)
+    w.clear(test_map)
+    m.boundaries(test_map, template)
 
 
 # def test_new():
