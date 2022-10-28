@@ -16,30 +16,6 @@ bia_names = [
     "tribal_entities",
 ]
 
-# city_boundaries_names = [
-#     "city_limits",
-#     "ugb",
-#     "council_wards",
-#     "urban_reserve",
-#     "cardinals",
-#     "cmaq",
-#     "gpid",
-#     "county_line",
-# ]
-
-school_names = [
-    "locations",
-    "grounds",
-    "walking",
-    "hazard",
-    "buffer",
-    "elementary",
-    "middle",
-    "high",
-    "district_7",
-    "three_rivers",
-]
-
 
 def layer_names(pre, names, post):
     """
@@ -91,20 +67,46 @@ def build_template(gis):
 
     :return: Updates the template.json file.
     """
+    agreements = gis.content.get(r.TEMPLATE_AGREEMENTS)
     aiannha = gis.content.get(r.TEMPLATE_AIANNHA)
     bia = gis.content.get(r.TEMPLATE_BIA)
     city_boundaries = gis.content.get(r.TEMPLATE_CITY_BOUNDARIES)
+    deq_dw_source = gis.content.get(r.TEMPLATE_DEQ_DW_SOURCE)
+    deq_dw_pcs = gis.content.get(r.TEMPLATE_DEQ_DW_PCS)
+    deq_hydro_2022 = gis.content.get(r.TEMPLATE_DEQ_HYDRO)
+    dsl_esh = gis.content.get(r.TEMPLATE_DSL_ESH)
+    fema_flood = gis.content.get(r.TEMPLATE_FEMA_FLOOD)
+    historic_cultural = gis.content.get(r.TEMPLATE_HISTORIC_CULTURAL)
+    land_use = gis.content.get(r.TEMPLATE_LAND_USE)
+    marijuana_adult_use = gis.content.get(r.TEMPLATE_MARIJUANA_ADULT_USE)
     missing_sidewalks = gis.content.get(r.TEMPLATE_MISSING_SIDEWALKS)
+    nhd = gis.content.get(r.TEMPLATE_NHD)
     plss = gis.content.get(r.TEMPLATE_PLSS)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
+    tax_parcels = gis.content.get(r.TEMPLATE_TAX_PARCELS)
+    zoning = gis.content.get(r.TEMPLATE_ZONING)
 
     template = {}
+    template.update(build_template_dictionary("agreements", agreements))
     template.update(build_template_dictionary("aiannha", aiannha))
     template.update(build_template_dictionary("bia", bia))
     template.update(build_template_dictionary("city_boundaries", city_boundaries))
+    template.update(build_template_dictionary("deq_dw_source", deq_dw_source))
+    template.update(build_template_dictionary("deq_dw_pcs", deq_dw_pcs))
+    template.update(build_template_dictionary("deq_hydro_2022", deq_hydro_2022))
+    template.update(build_template_dictionary("dsl_esh", dsl_esh))
+    template.update(build_template_dictionary("fema_flood", fema_flood))
+    template.update(build_template_dictionary("historic", historic_cultural))
+    template.update(build_template_dictionary("land_use", land_use))
+    template.update(
+        build_template_dictionary("marijuana_adult_use", marijuana_adult_use)
+    )
     template.update(build_template_dictionary("missing_sidewalks", missing_sidewalks))
+    template.update(build_template_dictionary("nhd", nhd))
     template.update(build_template_dictionary("plss", plss))
     template.update(build_template_dictionary("schools", schools))
+    template.update(build_template_dictionary("tax_parcels", tax_parcels))
+    template.update(build_template_dictionary("zoning", zoning))
     return template
     # file_name = os.path.join(TEMPLATE_DIR, "template.json")
     # with open(file_name, "w") as fp:
@@ -115,29 +117,68 @@ def build_template_dictionary(template_type, template):
     logging.debug("Building template for %s.", template_type)
     template_dict = {}
     match template_type:
+        case "agreements":
+            template_dict.update(
+                update_layer("agreements", u.agreements_urls, template)
+            )
         case "aiannha":
             template_dict.update(update_layer("aiannha", u.aiannha_urls, template))
         case "bia":
             template_dict.update(update_layers("bia", bia_names, template))
-        # case "city_boundaries":
-        #     template_dict.update(
-        #         update_layers("city_boundaries", city_boundaries_names, template)
-        #     )
         case "city_boundaries":
             template_dict.update(
                 update_layer("city_boundaries", u.boundaries_urls, template)
+            )
+        case "deq_dw_source":
+            template_dict.update(
+                update_layer(
+                    "deq_dw_source", u.deq_drinking_water_source_urls, template
+                )
+            )
+        case "deq_dw_pcs":
+            template_dict.update(
+                update_layer(
+                    "deq_dw_pcs", u.deq_drinking_water_protection_urls, template
+                )
+            )
+        case "deq_hydro_2022":
+            template_dict.update(
+                update_layer("deq_hydro_2022", u.deq_hydro_2022_urls, template)
+            )
+        case "dsl_esh":
+            template_dict.update(update_layer("dsl_esh", u.dsl_esh_urls, template))
+        case "fema_flood":
+            template_dict.update(
+                update_layer("fema_flood", u.fema_flood_urls, template)
+            )
+        case "historic":
+            template_dict.update(
+                update_layer("historic", u.historic_cultural_areas_urls, template)
+            )
+        case "land_use":
+            template_dict.update(update_layer("land_use", u.land_use_urls, template))
+        case "marijuana_adult_use":
+            template_dict.update(
+                update_layer("marijuana_adult_use", u.marijuana_adult_urls, template)
             )
         case "missing_sidewalks":
             template_dict.update(
                 update_layer_info(m.missing_sidewalks_layer_names, template)
             )
+        case "nhd":
+            template_dict.update(update_layer("nhd", u.nhd_urls, template))
         case "plss":
             template_dict.update(update_layers("plss", plss_names, template))
         case "schools":
             template_dict.update(
                 update_layer("schools", u.school_districts_urls, template)
-                # update_layers("schools", school_names, template)
             )
+        case "tax_parcels":
+            template_dict.update(
+                update_layer("tax_parcels", u.tax_parcel_urls, template)
+            )
+        case "zoning":
+            template_dict.update(update_layer("zoning", u.zoning_urls, template))
 
     return template_dict
 
@@ -208,7 +249,7 @@ def update_layer(prefix, urls, template):
         if "layerDefinition" in ref_list[i]:
             new_data.update({label_name[i]: ref_list[i]["layerDefinition"]})
             logging.debug("Updating layer definition for %s in %s", i, prefix)
-        new_data.update({popup_name[i]: ref_list[i]["popupInfo"]})
-        new_data.update({label_name[i]: ref_list[i]["layerDefinition"]})
+        # new_data.update({popup_name[i]: ref_list[i]["popupInfo"]})
+        # new_data.update({label_name[i]: ref_list[i]["layerDefinition"]})
 
     return new_data

@@ -12,14 +12,14 @@ from arcgis.mapping import MapServiceLayer
 from arcgis.mapping import WebMap
 from dotenv import load_dotenv
 import logging
-import json
+import pprint
 
 # format log messages to include time before message
 logging.basicConfig(
     format="%(asctime)s %(message)s",
     datefmt="%m/%d/%Y %I:%M:%S %p",
     # filename="sidewalks.log",
-    level=logging.DEBUG,
+    level=logging.INFO,
 )
 
 
@@ -67,6 +67,13 @@ def test_boundaries():
     m.boundaries(test_map, template)
 
 
+def test_map_def(map):
+    pp = pprint.PrettyPrinter(width=4)
+    test_map = gis.content.get(map)
+    map_def = test_map.get_data()
+    logging.info(pp.pprint(map_def["operationalLayers"]))
+
+
 # def test_new():
 #
 #     # build test map
@@ -82,6 +89,3 @@ def test_boundaries():
 #         {"serviceItemId": w.create_layer_id(random.randint(10000, 99999))}
 #     )
 #     wm.save(item_props, folder="tests")
-
-
-# def missing_sidewalks_layers():
