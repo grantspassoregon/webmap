@@ -82,8 +82,13 @@ def build_template(gis):
     missing_sidewalks = gis.content.get(r.TEMPLATE_MISSING_SIDEWALKS)
     nhd = gis.content.get(r.TEMPLATE_NHD)
     plss = gis.content.get(r.TEMPLATE_PLSS)
+    power_gas = gis.content.get(r.TEMPLATE_POWER_GAS)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
+    sewer = gis.content.get(r.TEMPLATE_SEWER)
+    stormwater = gis.content.get(r.TEMPLATE_STORMWATER)
     tax_parcels = gis.content.get(r.TEMPLATE_TAX_PARCELS)
+    transportation = gis.content.get(r.TEMPLATE_TRANSPORTATION)
+    water = gis.content.get(r.TEMPLATE_WATER)
     zoning = gis.content.get(r.TEMPLATE_ZONING)
 
     template = {}
@@ -104,8 +109,13 @@ def build_template(gis):
     template.update(build_template_dictionary("missing_sidewalks", missing_sidewalks))
     template.update(build_template_dictionary("nhd", nhd))
     template.update(build_template_dictionary("plss", plss))
+    template.update(build_template_dictionary("power_gas", power_gas))
     template.update(build_template_dictionary("schools", schools))
+    template.update(build_template_dictionary("sewer", sewer))
+    template.update(build_template_dictionary("stormwater", stormwater))
     template.update(build_template_dictionary("tax_parcels", tax_parcels))
+    template.update(build_template_dictionary("transportation", transportation))
+    template.update(build_template_dictionary("water", water))
     template.update(build_template_dictionary("zoning", zoning))
     return template
     # file_name = os.path.join(TEMPLATE_DIR, "template.json")
@@ -169,14 +179,28 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layer("nhd", u.nhd_urls, template))
         case "plss":
             template_dict.update(update_layers("plss", plss_names, template))
+        case "power_gas":
+            template_dict.update(update_layer("power_gas", u.power_gas_urls, template))
         case "schools":
             template_dict.update(
                 update_layer("schools", u.school_districts_urls, template)
+            )
+        case "sewer":
+            template_dict.update(update_layer("sewer", u.sewer_urls, template))
+        case "stormwater":
+            template_dict.update(
+                update_layer("stormwater", u.stormwater_urls, template)
             )
         case "tax_parcels":
             template_dict.update(
                 update_layer("tax_parcels", u.tax_parcel_urls, template)
             )
+        case "transportation":
+            template_dict.update(
+                update_layer("transportation", u.transportation_urls, template)
+            )
+        case "water":
+            template_dict.update(update_layer("water", u.water_urls, template))
         case "zoning":
             template_dict.update(update_layer("zoning", u.zoning_urls, template))
 

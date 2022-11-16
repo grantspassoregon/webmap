@@ -39,11 +39,17 @@ aiannha_base = (
 url_range = [10, 9, 8, 4, 3, 2, 1]
 aiannha_urls = expand_urls(aiannha_base, url_range)
 
+# library district
+library_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Library_District/MapServer/0"
+
 # city boundaries
 
 boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
+urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
 url_range = list(range(7, -1, -1))
 boundaries_urls = expand_urls(boundaries_base, url_range)
+boundaries_urls[4] = urban_reserve_url
+boundaries_urls.insert(1, library_url)
 
 # school districts
 
@@ -63,12 +69,9 @@ school_districts_urls.insert(2, school_zones)
 school_districts_urls.append(school_locations)
 
 
-# library district
-library_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Library_District/MapServer/0"
-
-
 # addresses
 county_addresses_url = "https://services6.arcgis.com/Hf6u9DI4oZH2QTg9/arcgis/rest/services/Josephine_County_Site_Address/FeatureServer/0"
+ecso911_addresses_url = "https://gis.ecso911.com/server/rest/services/Hosted/JoCo_SiteAddress/FeatureServer/0"
 
 # land use
 land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
@@ -215,8 +218,18 @@ dsl_esh_urls = expand_urls(dsl_esh_base, url_range)
 # transportation
 odot_construction_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/ODOT_Traffic_Construction/FeatureServer/0"
 odot_traffic_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/ODOT_Traffic_Incidents/FeatureServer/0"
+odot_railroad_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/railroadsgb/FeatureServer/0"
 
-county_roads = "https://gis.co.josephine.or.us/arcgis/rest/services/Public_Works/Josephine_County_Owned_Roads/MapServer/0"
+county_owned_roads_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Public_Works/Josephine_County_Owned_Roads/MapServer/0"
+county_state_owned_roads_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Public_Works/State_jurisdiction/MapServer/0"
+county_bridges_url = (
+    "https://gis.co.josephine.or.us/arcgis/rest/services/Bridges/MapServer/0"
+)
+
+# ecso911 data
+county_roads_url = (
+    "https://gis.ecso911.com/server/rest/services/Hosted/Centerline/FeatureServer/0"
+)
 
 
 # forest service wildfire
@@ -289,3 +302,53 @@ marijuana_adult_urls = expand_urls(marijuana_adult_base, url_range)
 agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
 url_range = list(range(5, -1, -1))
 agreements_urls = expand_urls(agreements_base, url_range)
+
+
+# transportation
+transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/transportation/FeatureServer/"
+url_range = list(range(17, -1, -1))
+transportation_urls = expand_urls(transportation_base, url_range)
+transportation_urls.insert(6, county_roads_url)
+transportation_urls.insert(7, transportation_urls[7])
+transportation_urls.insert(7, transportation_urls[7])
+transportation_urls.insert(0, odot_railroad_url)
+transportation_urls.insert(0, odot_construction_url)
+transportation_urls.insert(0, odot_traffic_url)
+
+# utilities
+
+# water
+
+water_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/water_utilities/MapServer/"
+url_range = list(range(11, -1, -1))
+water_urls = expand_urls(water_base, url_range)
+# copy water mains layer twice (for ownership and pipe size symbology)
+water_urls.insert(5, water_urls[5])
+water_urls.insert(5, water_urls[5])
+# copy water pressure zones for billing zones
+water_urls.insert(2, water_urls[2])
+
+# stormwater
+
+stormwater_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/MapServer/"
+url_range = list(range(11, -1, -1))
+stormwater_urls = expand_urls(stormwater_base, url_range)
+
+# sewer
+sewer_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/sewer_areas/FeatureServer/"
+url_range = list(range(3, -1, -1))
+sewer_areas_urls = expand_urls(sewer_areas_base, url_range)
+
+sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/SS/FeatureServer/"
+url_range = list(range(7, 0, -1))
+sewer_urls = expand_urls(sewer_base, url_range)
+
+sewer_areas_urls.extend(sewer_urls)
+sewer_urls = sewer_areas_urls
+
+# power and gas
+# protected by NDA, not for public distribution
+
+power_gas_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/power_gas_utilities/MapServer/"
+url_range = list(range(3, -1, -1))
+power_gas_urls = expand_urls(power_gas_base, url_range)

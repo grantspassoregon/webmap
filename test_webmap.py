@@ -29,6 +29,8 @@ ARCGIS_PASSWORD = os.getenv("ARCGIS_PASSWORD")
 API_KEY = os.getenv("API_KEY")
 CLIENT_ID = os.getenv("CLIENT_ID")
 PORTAL = "https://grantspassoregon.maps.arcgis.com/"
+INTERNAL = os.getenv("INTERNAL")
+INTERNAL_ID = os.getenv("INTERNAL_ID")
 logging.info("environmental variables loaded")
 
 gis = GIS(
@@ -36,6 +38,11 @@ gis = GIS(
     ARCGIS_USERNAME,
     ARCGIS_PASSWORD,
     # api_key=API_KEY,
+)
+internal = GIS(
+    PORTAL,
+    ARCGIS_USERNAME,
+    ARCGIS_PASSWORD,
 )
 logging.info("Logged in to " + gis.properties.name)
 # logging.info("Properties are ")
@@ -57,14 +64,7 @@ def test_city_basemap():
     test_map = gis.content.get(r.TEST_CITY_BASEMAP)
     template = t.build_template(gis)
     w.clear(test_map)
-    m.city_basemap(test_map, template)
-
-
-def test_boundaries():
-    test_map = gis.content.get(r.TEST_BOUNDARIES)
-    template = t.build_template(gis)
-    w.clear(test_map)
-    m.boundaries(test_map, template)
+    m.city_basemap(test_map, template, internal)
 
 
 def test_map_def(map):
