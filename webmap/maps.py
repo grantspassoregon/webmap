@@ -1,6 +1,7 @@
 from webmap import webmap as w
 from webmap import urls as u
 from webmap import template as t
+from webmap import search as s
 from arcgis.mapping import MapServiceLayer
 import logging
 
@@ -217,7 +218,7 @@ def aiannha_layers(group_lyr, template):
     group_lyr["layers"].append(aiannha_group)
 
 
-def city_boundaries(group_lyr, template):
+def boundary_layers(group_lyr, template):
     """
     Regulatory boundaries for the City of Grants Pass.
 
@@ -229,7 +230,10 @@ def city_boundaries(group_lyr, template):
     label_names = t.layer_tags("city_boundaries", u.boundaries_urls, "_label")
     url_list = u.boundaries_urls
 
-    boundaries_group = w.group_layer("City Boundaries")
+    map_name = "Boundaries"
+    map_group = w.group_layer(map_name)
+    school_layers(map_group, template)
+    logging.info("Adding school district boundaries to %s.", map_name)
     for index, url in enumerate(url_list):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
@@ -252,8 +256,14 @@ def city_boundaries(group_lyr, template):
             fc.update({"popupInfo": template[popup_names[index]]})
         if label_names[index] in template:
             fc.update({"layerDefinition": template[label_names[index]]})
-        boundaries_group["layers"].append(fc)
-    group_lyr["layers"].append(boundaries_group)
+        map_group["layers"].append(fc)
+    aiannha_layers(map_group, template)
+    logging.info("AIANNHA layers added to %s.", map_name)
+    bia_layers(map_group, template)
+    logging.info("BIA layers added to %s.", map_name)
+    plss_layers(map_group, template)
+    logging.info("PLSS layers added to %s.", map_name)
+    group_lyr["layers"].append(map_group)
 
 
 def school_layers(group_lyr, template):
@@ -303,32 +313,32 @@ def school_layers(group_lyr, template):
     group_lyr["layers"].append(schools_group)
 
 
-def boundaries(group_lyr, template):
-    """
-    Regulatory boundaries for City of Grants Pass.
+# def boundaries(group_lyr, template):
+#     """
+#     Regulatory boundaries for City of Grants Pass.
+#
+#     :param group_lyr: Group layer definition target for layers.
+#     :return: Updates the web map, adding reference layers.
+#     :rtype: None.
+#     """
+#     map_name = "boundaries map"
+#     logging.info("Building %s.", map_name)
+#     basemap = w.group_layer("Boundaries")
+#     school_layers(basemap, template)
+#     logging.info("Adding school district boundaries to %s.", map_name)
+#     city_boundaries(basemap, template)
+#     logging.info("City boundaries layers added to boundaries map.")
+#     aiannha_layers(basemap, template)
+#     logging.info("AIANNHA layers added to boundaries map.")
+#     bia_layers(basemap, template)
+#     logging.info("BIA layers added to boundaries map.")
+#     plss_layers(basemap, template)
+#     logging.info("PLSS layers added to boundaries map.")
+#     group_lyr["layers"].append(basemap)
+#     logging.info("Appending layers to %s definition.", map_name)
 
-    :param group_lyr: Group layer definition target for layers.
-    :return: Updates the web map, adding reference layers.
-    :rtype: None.
-    """
-    map_name = "boundaries map"
-    logging.info("Building %s.", map_name)
-    basemap = w.group_layer("Boundaries")
-    school_layers(basemap, template)
-    logging.info("Adding school district boundaries to %s.", map_name)
-    city_boundaries(basemap, template)
-    logging.info("City boundaries layers added to boundaries map.")
-    aiannha_layers(basemap, template)
-    logging.info("AIANNHA layers added to boundaries map.")
-    bia_layers(basemap, template)
-    logging.info("BIA layers added to boundaries map.")
-    plss_layers(basemap, template)
-    logging.info("PLSS layers added to boundaries map.")
-    group_lyr["layers"].append(basemap)
-    logging.info("Appending layers to %s definition.", map_name)
 
-
-def aerial_imagery(group_lyr):
+def aerial_imagery(group_lyr, template):
     """
     Append aerial imagery layers to group layer.
 
@@ -338,6 +348,9 @@ def aerial_imagery(group_lyr):
     :rtype: None
     """
     basemap = w.group_layer("Aerial Imagery")
+    basemap["layers"].append(u.aerials_2017_def)
+    basemap["layers"].append(u.aerials_2019_ndvi_def)
+    basemap["layers"].append(u.aerials_2019_def)
     basemap["layers"].append(u.esri_image_def)
     group_lyr["layers"].append(basemap)
 
@@ -599,6 +612,33 @@ def agreements_layers(group_lyr, template):
     group_lyr["layers"].append(map_group)
 
 
+def as_builts_layers(group_lyr, template):
+    """
+    As builts for the City of Grants Pass, Oregon.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    popup_names = t.layer_tags("as_builts", u.as_builts_urls, "_popup")
+    label_names = t.layer_tags("as_builts", u.as_builts_urls, "_label")
+    url_list = u.as_builts_urls
+
+    map_name = "As Builts"
+    map_group = w.group_layer(map_name)
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], map_name)
+        map_group["layers"].append(fc)
+    group_lyr["layers"].append(map_group)
+
+
 def planning_layers(group_lyr, template):
     """
     Zoning, historic/cultural areas and miscellaneous planning layers for City of Grants Pass.
@@ -615,6 +655,8 @@ def planning_layers(group_lyr, template):
     map_group = w.group_layer(map_name)
     conservation = "Proposed Conservation District"
     conservation_group = w.group_layer(conservation)
+    as_builts_layers(map_group, template)
+    logging.info("As builts added to %s.", map_name)
     for index, url in enumerate(url_list):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
@@ -727,40 +769,57 @@ def deq_hydro_layers(group_lyr, template):
     group_lyr["layers"].append(map_group)
 
 
-def deq_drinking_water_protection_layers(group_lyr, template):
+# def deq_drinking_water_protection_layers(group_lyr, template):
+#     """
+#     DEQ drinking water potential contaminant sources (PCS).
+#
+#     :param group_lyr: Group layer definition target for layers.
+#     :return: Updates group layer definition with layers.
+#     :rtype: None
+#     """
+#     popup_names = t.layer_tags(
+#         "deq_dw_pcs", u.deq_drinking_water_protection_urls, "_popup"
+#     )
+#     label_names = t.layer_tags(
+#         "deq_dw_pcs", u.deq_drinking_water_protection_urls, "_label"
+#     )
+#     url_list = u.deq_drinking_water_protection_urls
+#
+#     map_name = "Drinking Water Potential Contaminant Sources (DEQ)"
+#     map_group = w.group_layer(map_name)
+#     sub_group = w.group_layer("Surface Water Potential Contaminant Sources")
+#     for index, url in enumerate(url_list):
+#         map_lyr = MapServiceLayer(url)
+#         fc = w.feature_class(map_lyr, 0.5)
+#         fc.update({"visibility": False})
+#         if popup_names[index] in template:
+#             fc.update({"popupInfo": template[popup_names[index]]})
+#         if label_names[index] in template:
+#             fc.update({"layerDefinition": template[label_names[index]]})
+#         logging.debug("Appending %s to %s layer.", fc["title"], map_name)
+#         if index in list(range(0, 9)):
+#             sub_group["layers"].append(fc)
+#         else:
+#             map_group["layers"].append(fc)
+#     map_group["layers"].insert(0, sub_group)
+#     group_lyr["layers"].append(map_group)
+
+
+def deq_pcs_layers(group_lyr, template):
     """
     DEQ drinking water potential contaminant sources (PCS).
 
-    :param group_lyr: Group layer definition target for layers.
-    :return: Updates group layer definition with layers.
+    :param group_lyr: Group layer to update with target layers.
+    :type group_lyr: Group layer
+    :return: Updates group layer to include the target layers.
     :rtype: None
     """
-    popup_names = t.layer_tags(
-        "deq_dw_pcs", u.deq_drinking_water_protection_urls, "_popup"
-    )
-    label_names = t.layer_tags(
-        "deq_dw_pcs", u.deq_drinking_water_protection_urls, "_label"
-    )
-    url_list = u.deq_drinking_water_protection_urls
-
-    map_name = "Drinking Water Potential Contaminant Sources (DEQ)"
-    map_group = w.group_layer(map_name)
-    sub_group = w.group_layer("Surface Water Potential Contaminant Sources")
-    for index, url in enumerate(url_list):
-        map_lyr = MapServiceLayer(url)
-        fc = w.feature_class(map_lyr, 0.5)
-        fc.update({"visibility": False})
-        if popup_names[index] in template:
-            fc.update({"popupInfo": template[popup_names[index]]})
-        if label_names[index] in template:
-            fc.update({"layerDefinition": template[label_names[index]]})
-        logging.debug("Appending %s to %s layer.", fc["title"], map_name)
-        if index in list(range(0, 9)):
-            sub_group["layers"].append(fc)
-        else:
-            map_group["layers"].append(fc)
-    map_group["layers"].insert(0, sub_group)
-    group_lyr["layers"].append(map_group)
+    deq_pcs_def = u.deq_pcs_def
+    if "deq_pcs_popup" in template:
+        deq_pcs_def.update({"popupInfo": template["deq_pcs_popup"]})
+    if "deq_pcs_label" in template:
+        deq_pcs_def.update({"layerDefinition": template["deq_pcs_label"]})
+    group_lyr["layers"].append(u.deq_pcs_def)
 
 
 def dsl_esh_layers(group_lyr, template):
@@ -802,6 +861,170 @@ def dsl_esh_layers(group_lyr, template):
     group_lyr["layers"].append(map_group)
 
 
+def dsl_wetland_layers(group_lyr, template):
+    """
+    National Wetland Inventory service from Oregon DSL.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    popup_names = t.layer_tags("dsl_wetland", u.dsl_wetlands_url, "_popup")
+    label_names = t.layer_tags("dsl_wetland", u.dsl_wetlands_url, "_label")
+    url_list = u.dsl_wetlands_url
+
+    map_name = "Wetlands (DSL)"
+    map_group = w.group_layer(map_name)
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        # if fc["title"] == "Esh2022":
+        #     fc.update({"title": "Essential Salmon Habitat 2022"})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], map_name)
+        map_group["layers"].append(fc)
+    group_lyr["layers"].append(map_group)
+
+
+def soils_layers(group_lyr, template):
+    """
+    Soil classification layers from NRCS.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    map_name = "Soils"
+    map_group = w.group_layer(map_name)
+    w.add_single_layer(
+        "hydric_soils",
+        u.dsl_hydric_soils_url,
+        map_group,
+        template,
+        title="Hydric Soils (DSL)",
+        visibility=False,
+    )
+    logging.info("Hydric soils added to %s.", map_name)
+
+    nrcs_soils_def = u.nrcs_soils_def
+    if "soils_popup" in template:
+        nrcs_soils_def.update({"popupInfo": template["soils_popup"]})
+    if "soils_label" in template:
+        nrcs_soils_def.update({"layerDefinition": template["soils_label"]})
+    map_group["layers"].append(u.nrcs_soils_def)
+    logging.info("Soils added to %s.", map_name)
+
+    group_lyr["layers"].append(map_group)
+
+
+# def nwi_wetland_layers(group_lyr, template):
+#     """
+#     National Wetland Inventory service from USFWS.
+#
+#     :param group_lyr: Group layer definition target for layers.
+#     :return: Updates group layer definition with layers.
+#     :rtype: None
+#     """
+#     popup_names = t.layer_tags("nwi_wetland", u.fw_nwi_wetlands, "_popup")
+#     label_names = t.layer_tags("nwi_wetland", u.fw_nwi_wetlands, "_label")
+#     url_list = u.fw_nwi_wetlands
+#
+#     map_name = "Wetlands (USFWS)"
+#     map_group = w.group_layer(map_name)
+#     for index, url in enumerate(url_list):
+#         map_lyr = MapServiceLayer(url)
+#         fc = w.feature_class(map_lyr, 0.5)
+#         fc.update({"visibility": False})
+#         # if fc["title"] == "Esh2022":
+#         #     fc.update({"title": "Essential Salmon Habitat 2022"})
+#         if popup_names[index] in template:
+#             fc.update({"popupInfo": template[popup_names[index]]})
+#         if label_names[index] in template:
+#             fc.update({"layerDefinition": template[label_names[index]]})
+#         logging.debug("Appending %s to %s layer.", fc["title"], map_name)
+#         map_group["layers"].append(fc)
+#     group_lyr["layers"].append(map_group)
+
+
+def hazards_layers(group_lyr, template):
+    """
+    Environmental hazards layers for the City of Grants Pass, Oregon.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    popup_names = t.layer_tags("hazards", u.hazards_urls, "_popup")
+    label_names = t.layer_tags("hazards", u.hazards_urls, "_label")
+    url_list = u.hazards_urls
+
+    map_name = "Hazards"
+    map_group = w.group_layer(map_name)
+    wildfire_layers(map_group)
+    logging.info("Wildfire potential (FS) layers added to %s.", map_name)
+    deq_hydro_layers(map_group, template)
+    logging.info("Impaired surface waters (DEQ) added to %s.", map_name)
+    deq_pcs_layers(map_group, template)
+    logging.info("Potential contamination sources (DEQ) added to %s.", map_name)
+    fema_nfhl_layers(map_group, template)
+    logging.info("FEMA flood (NFHL) added to %s.", map_name)
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], map_name)
+        map_group["layers"].append(fc)
+    group_lyr["layers"].append(map_group)
+
+
+def features_layers(group_lyr, template):
+    """
+    Environmental features layers for the City of Grants Pass, Oregon.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    map_name = "Features"
+    map_group = w.group_layer(map_name)
+    lidar_layers(map_group)
+    logging.info("LiDAR layers added to %s.", map_name)
+    soils_layers(map_group, template)
+    logging.info("Soils layers added to %s.", map_name)
+    nhd_layers(map_group, template)
+    logging.info("Hydrography (NHD) layers added to %s.", map_name)
+    w.add_single_layer(
+        "wetlands",
+        u.dsl_wetlands_url,
+        map_group,
+        template,
+        title="Wetlands (DSL)",
+        visibility=False,
+    )
+    logging.info("Wetland inventory (DSL) added to %s.", map_name)
+    dsl_esh_layers(map_group, template)
+    logging.info("Essential salmon habitat (DSL) added to %s.", map_name)
+    deq_drinking_water_source_layers(map_group, template)
+    logging.info("Drinking water source areas (DEQ) added to %s.", map_name)
+    w.add_single_layer(
+        "features0",
+        u.features_urls[1],
+        map_group,
+        template,
+        title="20ft Stream Buffer",
+        visibility=False,
+    )
+    group_lyr["layers"].append(map_group)
+
+
 def environment_layers(group_lyr, template):
     """
     Environmental features and hazards for the City of Grants Pass.
@@ -814,26 +1037,11 @@ def environment_layers(group_lyr, template):
     map_name = "Environment"
     map_group = w.group_layer(map_name)
 
-    features = w.group_layer("Features")
-    lidar_layers(features)
-    logging.info("LiDAR layers added to %s.", map_name)
-    nhd_layers(features, template)
-    logging.info("Hydrography (NHD) layers added to %s.", map_name)
-    dsl_esh_layers(features, template)
-    logging.info("Essential salmon habitat (DSL) added to %s.", map_name)
-    deq_drinking_water_source_layers(features, template)
-    logging.info("Drinking water source areas (DEQ) added to %s.", map_name)
+    features_layers(map_group, template)
+    logging.info("Environmental features added to %s.", map_name)
+    hazards_layers(map_group, template)
+    logging.info("Hazards layers added to %s.", map_name)
 
-    hazards = w.group_layer("Hazards")
-    wildfire_layers(hazards)
-    logging.info("Wildfire potential (FS) layers added to %s.", map_name)
-    deq_hydro_layers(hazards, template)
-    logging.info("Impaired surface waters (DEQ) added to %s.", map_name)
-    fema_nfhl_layers(hazards, template)
-    logging.info("FEMA flood (NFHL) added to %s.", map_name)
-
-    map_group["layers"].append(features)
-    map_group["layers"].append(hazards)
     group_lyr["layers"].append(map_group)
 
 
@@ -856,6 +1064,10 @@ def transportation_layers(group_lyr, template):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
+        if fc["title"] == "JCT Stops":
+            fc.update({"title": "Bus Stops (JCT)"})
+        if fc["title"] == "JCT Routes":
+            fc.update({"title": "Bus Routes (JCT)"})
         if fc["title"] == "railroadsgb":
             fc.update({"title": "Railroad"})
         if fc["title"] == "TripCheck_Construction_Data_Upload":
@@ -1007,6 +1219,10 @@ def utility_layers(group_lyr, template, internal, public=False):
     map_name = "Utilities"
     map_group = w.group_layer(map_name)
 
+    w.add_single_layer(
+        "cell_towers", u.cell_towers_url, map_group, template, visibility=False
+    )
+    logging.info("Cell towers added to %s.", map_name)
     sewer_layers(map_group, template)
     logging.info("Sewer layers added to %s.", map_name)
     stormwater_layers(map_group, template)
@@ -1017,6 +1233,93 @@ def utility_layers(group_lyr, template, internal, public=False):
         power_gas_layers(map_group, template, internal)
         logging.info("Power and gas utilities layers added to %s.", map_name)
 
+    group_lyr["layers"].append(map_group)
+
+
+def safety_layers(group_lyr, template):
+    """
+    Public safety layers from Josephine County ECSO 911 service.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+
+    map_name = "Public Safety (County ECSO 911)"
+    map_group = w.group_layer(map_name)
+
+    w.add_single_layer(
+        "ecso911_law",
+        u.ecso911_law_url,
+        map_group,
+        template,
+        title="Law Enforcement Zones",
+        visibility=False,
+    )
+    w.add_single_layer(
+        "ecso911_fire",
+        u.ecso911_fire_url,
+        map_group,
+        template,
+        title="Fire Response Zones",
+        visibility=False,
+    )
+    w.add_single_layer(
+        "ecso911_ems",
+        u.ecso911_ems_url,
+        map_group,
+        template,
+        title="EMS Response Zones",
+        visibility=False,
+    )
+
+    group_lyr["layers"].append(map_group)
+
+
+def street_imagery_layers(group_lyr, template):
+    """
+    Street level imagery for the City of Grants Pass, Oregon.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+
+    w.add_single_layer(
+        "street_imagery",
+        u.street_imagery_url,
+        group_lyr,
+        template,
+        title="Street Imagery (2018)",
+        visibility=False,
+    )
+
+
+def landfill_layers(group_lyr, template):
+    """
+    Merlin landfill layers for the City of Grants Pass, Oregon.
+
+    :param group_lyr: Group layer definition target for layers.
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+
+    popup_names = t.layer_tags("landfill", u.landfill_urls, "_popup")
+    label_names = t.layer_tags("landfill", u.landfill_urls, "_label")
+    url_list = u.landfill_urls
+
+    map_name = "Merlin Landfill"
+    map_group = w.group_layer(map_name)
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], map_name)
+        map_group["layers"].append(fc)
     group_lyr["layers"].append(map_group)
 
 
@@ -1032,22 +1335,35 @@ def city_basemap(project_map, template, internal, public=False):
     logging.info("Building %s.", map_name)
     basemap = w.group_layer("City of Grants Pass Layers")
 
-    aerial_imagery(basemap)
-    logging.info("Aerial imagery added to %s.", map_name)
-    environment_layers(basemap, template)
-    logging.info("Environment layers added to %s.", map_name)
-    utility_layers(basemap, template, internal, public)
-    logging.info("Utility layers added to %s.", map_name)
-    transportation_layers(basemap, template)
-    logging.info("Transportation layers added to %s.", map_name)
-    planning_layers(basemap, template)
-    logging.info("Planning layers added to %s.", map_name)
-    boundaries(basemap, template)
-    logging.info("Regulatory boundaries added to %s.", map_name)
-    land_use_layers(basemap, template)
-    logging.info("Land use layers added to %s.", map_name)
+    # w.add_single_layer(
+    #     "cell_towers", u.cell_towers_url, basemap, template, visibility=False
+    # )
+    stormwater_layers(basemap, template)
+
+    # aerial_imagery(basemap, template)
+    # logging.info("Aerial imagery added to %s.", map_name)
+    # street_imagery_layers(basemap, template)
+    # logging.info("Street imagery added to %s.", map_name)
+    # landfill_layers(basemap, template)
+    # logging.info("Merlin landfill added to %s.", map_name)
+    # safety_layers(basemap, template)
+    # logging.info("Public safety layers added to %s.", map_name)
+    # environment_layers(basemap, template)
+    # logging.info("Environment layers added to %s.", map_name)
+    # utility_layers(basemap, template, internal, public)
+    # logging.info("Utility layers added to %s.", map_name)
+    # transportation_layers(basemap, template)
+    # logging.info("Transportation layers added to %s.", map_name)
+    # planning_layers(basemap, template)
+    # logging.info("Planning layers added to %s.", map_name)
+    # boundary_layers(basemap, template)
+    # logging.info("Regulatory boundaries added to %s.", map_name)
+    # land_use_layers(basemap, template)
+    # logging.info("Land use layers added to %s.", map_name)
 
     map_def = project_map.get_data()
     logging.info("Appending layers to %s definition.", map_name)
     map_def["operationalLayers"].append(basemap)
     project_map.update({"text": str(map_def)})
+    logging.info("Adding search.")
+    s.add_search(project_map)

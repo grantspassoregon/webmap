@@ -6,6 +6,7 @@ from webmap import webmap as w
 from webmap import template as t
 from webmap import refs as r
 from webmap import maps as m
+from webmap import search as s
 import arcgis
 from arcgis.gis import GIS
 from arcgis.mapping import MapServiceLayer
@@ -60,11 +61,15 @@ def test_missing_sidewalks():
     m.missing_sidewalks_map(test_map, template)
 
 
-def test_city_basemap():
+def test_city_basemap(public=False):
     test_map = gis.content.get(r.TEST_CITY_BASEMAP)
     template = t.build_template(gis)
     w.clear(test_map)
-    m.city_basemap(test_map, template, internal)
+    m.city_basemap(test_map, template, internal, public)
+
+
+def test_search(map):
+    s.add_search(map)
 
 
 def test_map_def(map):

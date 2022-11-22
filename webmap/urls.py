@@ -152,16 +152,44 @@ fs_wildfire_potential_url = "https://apps.fs.usda.gov/fsgisx01/rest/services/RDW
 
 # environmental features
 
-# Fish & Wildlife NWI Wetlands
-fw_nwi_wetlands = (
-    "https://www.fws.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0"
+features_base = "https://gisserver.grantspassoregon.gov/server/rest/services/environmental_features/MapServer/"
+url_range = [1, 0]
+features_urls = expand_urls(features_base, url_range)
+
+# dsl
+# dsl wetlands
+dsl_wetlands_url = "https://maps.dsl.state.or.us/arcgis/rest/services/NWI/MapServer/0"
+
+# Soils
+dsl_hydric_soils_url = (
+    "https://maps.dsl.state.or.us/arcgis/rest/services/SwiHydric/MapServer/0"
 )
+
+# esri usa soils map units
+nrcs_soils_url = "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver/0"
+
+soils_urls = [dsl_hydric_soils_url, nrcs_soils_url]
+
+nrcs_soils_def = {
+    "id": "184814d8dc6-layer-2",
+    "itemId": "06e5fd61bdb6453fb16534c676e1c9b9",
+    "layerType": "ArcGISFeatureLayer",
+    "opacity": 0.5,
+    "title": "Soils Map Units (NRCS)",
+    "url": "https://landscape11.arcgis.com/arcgis/rest/services/USA_Soils_Map_Units/featureserver/0",
+    "visibility": False,
+}
+
+# Fish & Wildlife NWI Wetlands
+# fw_nwi_wetlands = (
+#     "https://www.fws.gov/wetlandsmapservice/rest/services/Wetlands/MapServer/0"
+# )
 
 # NRCS Hydric Soils
 # nrcs_hydric_soils = "https://gisdata.dsl.state.or.us/arcgis/rest/services/Maps/SWI_HydricSoil_2020_B/MapServer/0"
-nrcs_hydric_soils = (
-    "https://maps.dsl.state.or.us/arcgis/rest/services/HydricSoil/MapServer/0"
-)
+# nrcs_hydric_soils = (
+#     "https://maps.dsl.state.or.us/arcgis/rest/services/HydricSoil/MapServer/0"
+# )
 
 # dogami lidar
 dogami_be_def = {
@@ -194,12 +222,21 @@ url_range = [7, 6, 4, 3, 2]
 deq_drinking_water_source_urls = expand_urls(deq_drinking_water_source_base, url_range)
 
 # drinking water protection
-deq_drinking_water_protection_base = "https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/DrinkingWaterProtectionPCS/MapServer/"
-url_range = list(range(31, 22, -1))
-url_range.extend(list(range(21, -1, -1)))
-deq_drinking_water_protection_urls = expand_urls(
-    deq_drinking_water_protection_base, url_range
-)
+# deq_drinking_water_protection_base = "https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/DrinkingWaterProtectionPCS/MapServer/"
+# url_range = list(range(31, 22, -1))
+# url_range.extend(list(range(21, -1, -1)))
+# deq_drinking_water_protection_urls = expand_urls(
+#     deq_drinking_water_protection_base, url_range
+# )
+
+deq_pcs_def = {
+    "id": "DrinkingWaterProtectionPCS_946",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 0.5,
+    "title": "Drinking Water Protection (DEQ PCS)",
+    "url": "https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/DrinkingWaterProtectionPCS/MapServer",
+    "visibility": False,
+}
 
 # surface water impaired
 deq_hydro_2022_base = (
@@ -213,6 +250,12 @@ deq_hydro_2022_urls = expand_urls(deq_hydro_2022_base, url_range)
 dsl_esh_base = "https://maps.dsl.state.or.us/arcgis/rest/services/ESH/MapServer/"
 url_range = list(range(9, 0, -1))
 dsl_esh_urls = expand_urls(dsl_esh_base, url_range)
+
+
+# environmental hazards
+hazards_base = "https://gisserver.grantspassoregon.gov/server/rest/services/environmental_hazards/MapServer/0"
+url_range = list(range(3, -1, -1))
+hazards_urls = expand_urls(hazards_base, url_range)
 
 
 # transportation
@@ -229,6 +272,16 @@ county_bridges_url = (
 # ecso911 data
 county_roads_url = (
     "https://gis.ecso911.com/server/rest/services/Hosted/Centerline/FeatureServer/0"
+)
+
+ecso911_ems_url = (
+    "https://gis.ecso911.com/server/rest/services/Hosted/EMS_Polygon/FeatureServer/0"
+)
+ecso911_fire_url = (
+    "https://gis.ecso911.com/server/rest/services/Hosted/Fire_Polygon/FeatureServer/0"
+)
+ecso911_law_url = (
+    "https://gis.ecso911.com/server/rest/services/Hosted/Law_Polygon/FeatureServer/0"
 )
 
 
@@ -258,11 +311,47 @@ esri_image_def = {
     "url": "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer",
     "visibility": False,
     "opacity": 1,
-    "title": "Aerial Photo - ESRI (2021)",
+    "title": "2021 Imagery (ESRI)",
     "itemId": "10df2279f9684e4a9f6a7f08febac2a9",
     "showLegend": True,
     "layers": [],
 }
+
+aerials_2019_def = {
+    "id": "2019_WGS_84",
+    "layerType": "ArcGISTiledMapServiceLayer",
+    "opacity": 1,
+    "title": "2019 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/2019_WGS_84/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_2019_ndvi_def = {
+    "id": "NDVI_2019_WGS_84_NDVI_8524",
+    "layerType": "ArcGISTiledMapServiceLayer",
+    "opacity": 1,
+    "title": "2019 Imagery - NDVI (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/NDVI_2019_WGS_84_NDVI/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_2017_def = {
+    "id": "2017_Grants_Pass_Aerials_8659",
+    "layerType": "ArcGISTiledMapServiceLayer",
+    "opacity": 1,
+    "title": "2017 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/2017_Grants_Pass_Aerials/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+# street level imagery
+street_imagery_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/street_imagery/FeatureServer/0"
 
 # Planning
 
@@ -302,6 +391,7 @@ marijuana_adult_urls = expand_urls(marijuana_adult_base, url_range)
 agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
 url_range = list(range(5, -1, -1))
 agreements_urls = expand_urls(agreements_base, url_range)
+agreements_urls.remove(agreements_urls[0])
 
 
 # transportation
@@ -352,3 +442,19 @@ sewer_urls = sewer_areas_urls
 power_gas_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/power_gas_utilities/MapServer/"
 url_range = list(range(3, -1, -1))
 power_gas_urls = expand_urls(power_gas_base, url_range)
+
+# cell towers
+cell_towers_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/cell_towers/FeatureServer/0"
+
+
+# merlin landfill
+landfill_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/merlin_landfill/FeatureServer/"
+url_range = list(range(6, -1, -1))
+landfill_urls = expand_urls(landfill_base, url_range)
+
+# as builts
+as_builts_base = (
+    "https://gisserver.grantspassoregon.gov/server/rest/services/as_builts/MapServer/"
+)
+url_range = [1, 0]
+as_builts_urls = expand_urls(as_builts_base, url_range)

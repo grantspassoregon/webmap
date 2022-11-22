@@ -1,5 +1,6 @@
 import random
 import string
+import json
 from arcgis.mapping import MapServiceLayer
 from arcgis.mapping import WebMap
 
@@ -35,8 +36,10 @@ def add_single_layer(key_name, url, group_lyr, template, title=None, visibility=
     fc = feature_class(lyr, 0.5, title)
     if visibility != None:
         fc.update({"visibility": visibility})
-    fc.update({"popupInfo": template[popup_name]})
-    fc.update({"layerDefinition": template[label_name]})
+    if popup_name in template:
+        fc.update({"popupInfo": template[popup_name]})
+    if label_name in template:
+        fc.update({"layerDefinition": template[label_name]})
     group_lyr["layers"].append(fc)
 
 
