@@ -357,6 +357,14 @@ street_imagery_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/
 
 # oprd historic sites
 oprd_historic_sites_url = "https://maps.prd.state.or.us/arcgis/rest/services/Cultural/HistoricSites/MapServer/0"
+oprd_historic_sites_def = {
+    "id": "HistoricSites_2746",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 0.5,
+    "title": "Historic Sites (OPRD)",
+    "url": "https://maps.prd.state.or.us/arcgis/rest/services/Cultural/HistoricSites/MapServer",
+    "visibility": False,
+}
 
 # national park service
 nps_historic_sites_url = "https://mapservices.nps.gov/arcgis/rest/services/cultural_resources/nrhp_locations/MapServer/0"
@@ -369,7 +377,7 @@ nps_public_trails_url = "https://mapservices.nps.gov/arcgis/rest/services/Nation
 historic_cultural_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/historic_cultural_areas/FeatureServer/"
 url_range = list(range(3, -1, -1))
 historic_cultural_areas_urls = expand_urls(historic_cultural_areas_base, url_range)
-historic_cultural_areas_urls.insert(2, oprd_historic_sites_url)
+# historic_cultural_areas_urls.insert(2, oprd_historic_sites_url)
 
 # zoning
 zoning_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/zoning_group/FeatureServer/"

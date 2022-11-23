@@ -518,14 +518,19 @@ def historic_cultural_layers(group_lyr, template):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
-        if fc["title"] == "Historic_Sites":
-            fc.update({"title": "Historic Sites (OPRD)"})
         if popup_names[index] in template:
             fc.update({"popupInfo": template[popup_names[index]]})
         if label_names[index] in template:
             fc.update({"layerDefinition": template[label_names[index]]})
         logging.debug("Appending %s to %s layer.", fc["title"], map_name)
         map_group["layers"].append(fc)
+    fc = u.oprd_historic_sites_def
+    if "oprd_popup" in template:
+        fc.update({"popupInfo": template["oprd_popup"]})
+    if "oprd_label" in template:
+        fc.update({"layerDefinition": template["oprd_label"]})
+    map_group["layers"].insert(2, fc)
+
     group_lyr["layers"].append(map_group)
 
 
@@ -1335,31 +1340,28 @@ def city_basemap(project_map, template, internal, public=False):
     logging.info("Building %s.", map_name)
     basemap = w.group_layer("City of Grants Pass Layers")
 
-    # w.add_single_layer(
-    #     "cell_towers", u.cell_towers_url, basemap, template, visibility=False
-    # )
-    stormwater_layers(basemap, template)
+    # stormwater_layers(basemap, template)
 
-    # aerial_imagery(basemap, template)
-    # logging.info("Aerial imagery added to %s.", map_name)
-    # street_imagery_layers(basemap, template)
-    # logging.info("Street imagery added to %s.", map_name)
-    # landfill_layers(basemap, template)
-    # logging.info("Merlin landfill added to %s.", map_name)
-    # safety_layers(basemap, template)
-    # logging.info("Public safety layers added to %s.", map_name)
-    # environment_layers(basemap, template)
-    # logging.info("Environment layers added to %s.", map_name)
-    # utility_layers(basemap, template, internal, public)
-    # logging.info("Utility layers added to %s.", map_name)
-    # transportation_layers(basemap, template)
-    # logging.info("Transportation layers added to %s.", map_name)
-    # planning_layers(basemap, template)
-    # logging.info("Planning layers added to %s.", map_name)
-    # boundary_layers(basemap, template)
-    # logging.info("Regulatory boundaries added to %s.", map_name)
-    # land_use_layers(basemap, template)
-    # logging.info("Land use layers added to %s.", map_name)
+    aerial_imagery(basemap, template)
+    logging.info("Aerial imagery added to %s.", map_name)
+    street_imagery_layers(basemap, template)
+    logging.info("Street imagery added to %s.", map_name)
+    landfill_layers(basemap, template)
+    logging.info("Merlin landfill added to %s.", map_name)
+    safety_layers(basemap, template)
+    logging.info("Public safety layers added to %s.", map_name)
+    environment_layers(basemap, template)
+    logging.info("Environment layers added to %s.", map_name)
+    utility_layers(basemap, template, internal, public)
+    logging.info("Utility layers added to %s.", map_name)
+    transportation_layers(basemap, template)
+    logging.info("Transportation layers added to %s.", map_name)
+    planning_layers(basemap, template)
+    logging.info("Planning layers added to %s.", map_name)
+    boundary_layers(basemap, template)
+    logging.info("Regulatory boundaries added to %s.", map_name)
+    land_use_layers(basemap, template)
+    logging.info("Land use layers added to %s.", map_name)
 
     map_def = project_map.get_data()
     logging.info("Appending layers to %s definition.", map_name)

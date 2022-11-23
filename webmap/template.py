@@ -90,6 +90,7 @@ def build_template(gis):
     marijuana_adult_use = gis.content.get(r.TEMPLATE_MARIJUANA_ADULT_USE)
     missing_sidewalks = gis.content.get(r.TEMPLATE_MISSING_SIDEWALKS)
     nhd = gis.content.get(r.TEMPLATE_NHD)
+    oprd = gis.content.get(r.TEMPLATE_OPRD_HISTORIC_SITES)
     plss = gis.content.get(r.TEMPLATE_PLSS)
     power_gas = gis.content.get(r.TEMPLATE_POWER_GAS)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
@@ -129,6 +130,7 @@ def build_template(gis):
     )
     template.update(build_template_dictionary("missing_sidewalks", missing_sidewalks))
     template.update(build_template_dictionary("nhd", nhd))
+    template.update(build_template_dictionary("oprd", oprd))
     template.update(build_template_dictionary("plss", plss))
     template.update(build_template_dictionary("power_gas", power_gas))
     template.update(build_template_dictionary("schools", schools))
@@ -219,6 +221,8 @@ def build_template_dictionary(template_type, template):
             )
         case "nhd":
             template_dict.update(update_layer("nhd", u.nhd_urls, template))
+        case "oprd":
+            template_dict.update(update_layers("oprd", [""], template))
         case "plss":
             template_dict.update(update_layers("plss", plss_names, template))
         case "power_gas":
