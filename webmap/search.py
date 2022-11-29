@@ -118,14 +118,77 @@ search_list = [
     search_item(u.planning_urls[5], "MAPNUM"),
     search_item(u.planning_urls[4], "NAME"),
     search_item(u.planning_urls[3], "RSIA_NAME"),
-    search_item(u.transportation_urls[23], "TSSU_ID"),
-    search_item(u.transportation_urls[22], "FACILITYID"),
-    search_item(u.transportation_urls[19], "FACILITYID"),
+    search_item(u.transportation_urls[23], "TSSU_ID"),  # traffic signals
+    search_item(u.transportation_urls[22], "FACILITYID"),  # antique street lights
+    search_item(u.transportation_urls[20], "ATTACHID"),  # signs
+    search_item(u.transportation_urls[20], "FACILITYID"),
+    search_item(u.transportation_urls[19], "FACILITYID"),  # poles
     search_item(u.transportation_urls[19], "HistoricID"),
-    search_item(u.transportation_urls[18], "LAYER"),
-    search_item(u.transportation_urls[18], "ROUTE_NUMBER"),
-    search_item(u.stormwater_urls[11], "FACILITYID"),
+    search_item(u.transportation_urls[18], "LAYER"),  # bus stops
+    search_item(u.transportation_urls[18], "ROUTE_NUMBER"),  # bus routes
+    search_item(u.transportation_urls[15], "NAME"),  # trails
+    search_item(u.transportation_urls[14], "ADOPTED_BY"),  # street adoption
+    search_item(u.transportation_urls[14], "FULLNAME"),
+    search_item(u.transportation_urls[13], "FULLNAME"),  # PCI
+    search_item(u.transportation_urls[12], "AssetID"),  # Streets (City)
+    search_item(u.transportation_urls[12], "FULLNAME"),
+    search_item(u.transportation_urls[9], "full_name"),  # Streets (County)
+    search_item(u.transportation_urls[5], "FACILITYID"),  # Sidewalks
+    search_item(u.transportation_urls[4], "FACILITYID"),  # Sidewalk curb ramps
+    search_item(u.transportation_urls[2], "RR_NAME"),  # Railroads
+    search_item(u.power_gas_urls[1], "AVOID"),  # Gas Lines - Abandoned
+    search_item(u.power_gas_urls[0], "AVOID"),  # Gas Lines - Current
+    search_item(u.water_urls[14], "ACCOUNTID"),  # Water Meters
+    search_item(u.water_urls[14], "AssociatedAddress"),
+    search_item(u.water_urls[14], "AssocMapNum"),
+    search_item(u.water_urls[14], "FACILITYID"),
+    search_item(u.water_urls[13], "FACILITYID"),  # water fittings
+    search_item(u.water_urls[12], "FACILITYID"),  # water valves
+    search_item(u.water_urls[11], "FACILITYID"),  # water hydrants
+    search_item(u.water_urls[10], "FACILITYID"),  # water sampling stations
+    search_item(u.water_urls[10], "ADDRESS"),
+    search_item(u.water_urls[9], "FACILITYID"),  # water service laterals
+    search_item(u.water_urls[8], "FACILITYID"),  # water mains
+    search_item(u.water_urls[5], "AssetID"),  # water network structures
+    search_item(u.water_urls[4], "PERMITNUMB"),  # water network structures
+    search_item(u.water_urls[3], "AssetID"),  # water pressure zones
+    search_item(u.water_urls[0], "FZ"),  # water flush zones
+    search_item(u.stormwater_urls[11], "FACILITYID"),  # stormwater manholes
     search_item(u.stormwater_urls[11], "HistoricID"),
+    search_item(u.stormwater_urls[10], "FACILITYID"),  # stormwater inlets
+    search_item(u.stormwater_urls[10], "HistoricID"),
+    search_item(u.stormwater_urls[9], "FACILITYID"),  # stormwater cleanouts
+    search_item(u.stormwater_urls[8], "FACILITYID"),  # stormwater valves
+    search_item(u.stormwater_urls[7], "FACILITYID"),  # stormwater outfalls
+    search_item(u.stormwater_urls[7], "HistoricID"),
+    search_item(u.stormwater_urls[6], "FACILITYID"),  # stormwater fittings
+    search_item(u.stormwater_urls[5], "FACILITYID"),  # stormwater culverts
+    search_item(u.stormwater_urls[4], "FACILITYID"),  # stormwater open drains
+    search_item(u.stormwater_urls[4], "HistoricID"),
+    search_item(u.stormwater_urls[3], "FACILITYID"),  # stormwater gravity mains
+    search_item(u.stormwater_urls[3], "HistoricID"),
+    search_item(u.stormwater_urls[2], "FACILITYID"),  # stormwater detention
+    search_item(u.stormwater_urls[2], "HistoricID"),
+    search_item(u.stormwater_urls[1], "SUB_BASIN_ID"),  # stormwater sub-basins
+    search_item(u.stormwater_urls[1], "SW_BASIN"),
+    search_item(u.stormwater_urls[0], "SUB_BASIN_ID"),  # stormwater basins
+    search_item(u.sewer_urls[11], "AssetID"),  # sewer manholes
+    search_item(u.sewer_urls[11], "HistoricID"),
+    search_item(u.sewer_urls[10], "FACILITYID"),  # sewer fittings
+    search_item(u.sewer_urls[9], "AssetID"),  # sewer valves
+    search_item(u.sewer_urls[9], "HistoricID"),
+    search_item(u.sewer_urls[8], "AssetID"),  # sewer clean outs
+    search_item(u.sewer_urls[8], "HistoricID"),
+    search_item(u.sewer_urls[7], "FACILITYID"),  # sewer discharge points
+    search_item(u.sewer_urls[7], "HistoricID"),
+    search_item(u.sewer_urls[6], "AssetID"),  # sewer gravity mains
+    search_item(u.sewer_urls[6], "FACILITYID"),
+    search_item(u.sewer_urls[5], "FACILITYID"),  # sewer lateral lines
+    search_item(u.sewer_urls[5], "HistoricID"),
+    search_item(u.sewer_urls[4], "AssetID"),  # sewer pressurized mains
+    search_item(u.sewer_urls[4], "FACILITYID"),
+    search_item(u.sewer_urls[1], "AssetID"),  # sewer network structures
+    search_item(u.sewer_urls[0], "AssetID"),  # sewer basins
     search_item(u.cell_towers_url, "Street_Add"),
     search_item(u.cell_towers_url, "NOTES"),
 ]

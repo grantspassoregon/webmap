@@ -347,7 +347,17 @@ def aerial_imagery(group_lyr, template):
     :return: Updates group layer to include the target layers.
     :rtype: None
     """
-    basemap = w.group_layer("Aerial Imagery")
+    group_name = "Aerial Imagery"
+    basemap = w.group_layer(group_name)
+    basemap["layers"].append(u.aerials_1938_def)
+    basemap["layers"].append(u.aerials_1952_def)
+    basemap["layers"].append(u.aerials_1975_def)
+    basemap["layers"].append(u.aerials_1998_def)
+    basemap["layers"].append(u.aerials_2001_def)
+    basemap["layers"].append(u.aerials_2004_def)
+    basemap["layers"].append(u.aerials_2007_def)
+    basemap["layers"].append(u.aerials_2011_def)
+    basemap["layers"].append(u.aerials_2015_def)
     basemap["layers"].append(u.aerials_2017_def)
     basemap["layers"].append(u.aerials_2019_ndvi_def)
     basemap["layers"].append(u.aerials_2019_def)
@@ -1064,7 +1074,9 @@ def transportation_layers(group_lyr, template):
 
     map_name = "Transportation"
     map_group = w.group_layer(map_name)
-    sub_group = w.group_layer("Streets")
+    streets_group = w.group_layer("Streets")
+    fixtures_group = w.group_layer("Fixtures")
+    alt_group = w.group_layer("Bike | Walk | Ride")
     for index, url in enumerate(url_list):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
@@ -1079,22 +1091,30 @@ def transportation_layers(group_lyr, template):
             fc.update({"title": "Construction (ODOT)"})
         if fc["title"] == "TripCheck_Incidents_Data_Upload":
             fc.update({"title": "Traffic Incidents (ODOT)"})
-        if index == 9:
+        if index == 7:
+            fc.update({"title": "Streets (ODOT)"})
+        if index == 8:
             fc.update({"title": "Streets (County)"})
-        if index == 10:
+        if index == 9:
             fc.update({"title": "Streets by Jurisdiction"})
-        if index == 11:
+        if index == 10:
             fc.update({"title": "Streets by Classification"})
         if popup_names[index] in template:
             fc.update({"popupInfo": template[popup_names[index]]})
         if label_names[index] in template:
             fc.update({"layerDefinition": template[label_names[index]]})
         logging.debug("Appending %s to %s layer.", fc["title"], map_name)
-        if index in list(range(8, 13)):
-            sub_group["layers"].append(fc)
+        if index in list(range(3, 14)):
+            streets_group["layers"].append(fc)
+        elif index in list(range(14, 19)):
+            alt_group["layers"].append(fc)
+        elif index in list(range(19, 24)):
+            fixtures_group["layers"].append(fc)
         else:
             map_group["layers"].append(fc)
-    map_group["layers"].insert(8, sub_group)
+    map_group["layers"].append(streets_group)
+    map_group["layers"].append(alt_group)
+    map_group["layers"].append(fixtures_group)
     group_lyr["layers"].append(map_group)
 
 
@@ -1339,8 +1359,6 @@ def city_basemap(project_map, template, internal, public=False):
     map_name = "city basemap"
     logging.info("Building %s.", map_name)
     basemap = w.group_layer("City of Grants Pass Layers")
-
-    # stormwater_layers(basemap, template)
 
     aerial_imagery(basemap, template)
     logging.info("Aerial imagery added to %s.", map_name)

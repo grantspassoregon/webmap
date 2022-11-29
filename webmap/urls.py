@@ -259,9 +259,11 @@ hazards_urls = expand_urls(hazards_base, url_range)
 
 
 # transportation
+odot_roads_url = "https://gis.odot.state.or.us/arcgis1006/rest/services/transgis/catalog/MapServer/164"
 odot_construction_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/ODOT_Traffic_Construction/FeatureServer/0"
 odot_traffic_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/ODOT_Traffic_Incidents/FeatureServer/0"
-odot_railroad_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/railroadsgb/FeatureServer/0"
+# odot_railroad_url = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/railroadsgb/FeatureServer/0"
+odot_railroad_url = "https://gis.odot.state.or.us/arcgis1006/rest/services/transgis/catalog/MapServer/143"
 
 county_owned_roads_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Public_Works/Josephine_County_Owned_Roads/MapServer/0"
 county_state_owned_roads_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Public_Works/State_jurisdiction/MapServer/0"
@@ -350,6 +352,105 @@ aerials_2017_def = {
     "maxScale": None,
 }
 
+aerials_2015_def = {
+    "id": "aerial_imagery_2015_7026",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "2015 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_2015/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_2011_def = {
+    "id": "aerial_imagery_2011_8032",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "2011 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_2011/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_2007_def = {
+    "id": "aerial_imagery_2007_4753",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "2007 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_2007/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_2004_def = {
+    "id": "aerial_imagery_2004_1894",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "2004 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_2004/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_2001_def = {
+    "id": "aerial_imagery_2001_7024",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "2001 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_2001/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_1998_def = {
+    "id": "aerial_imagery_1998_8124",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "1998 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_1998/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_1975_def = {
+    "id": "aerial_imagery_1975_3482",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "1975 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_1975/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_1952_def = {
+    "id": "aerial_imagery_1952_3501",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "1952 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_1952/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
+aerials_1938_def = {
+    "id": "aerial_imagery_1938_409",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "1938 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/aerial_imagery_1938/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
 # street level imagery
 street_imagery_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/street_imagery/FeatureServer/0"
 
@@ -403,12 +504,16 @@ agreements_urls.remove(agreements_urls[0])
 
 
 # transportation
-transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/transportation/FeatureServer/"
-url_range = list(range(17, -1, -1))
+# transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/transportation/FeatureServer/"
+transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/transportation1/FeatureServer/"
+url_range = list(range(15, -1, -1))
 transportation_urls = expand_urls(transportation_base, url_range)
-transportation_urls.insert(6, county_roads_url)
-transportation_urls.insert(7, transportation_urls[7])
-transportation_urls.insert(7, transportation_urls[7])
+transportation_signs_url = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation_signs/MapServer/0"
+transportation_urls.insert(13, transportation_signs_url)
+transportation_urls.insert(4, county_roads_url)
+transportation_urls.insert(4, odot_roads_url)
+transportation_urls.insert(6, transportation_urls[6])
+transportation_urls.insert(6, transportation_urls[6])
 transportation_urls.insert(0, odot_railroad_url)
 transportation_urls.insert(0, odot_construction_url)
 transportation_urls.insert(0, odot_traffic_url)
@@ -433,16 +538,19 @@ url_range = list(range(11, -1, -1))
 stormwater_urls = expand_urls(stormwater_base, url_range)
 
 # sewer
-sewer_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/sewer_areas/FeatureServer/"
-url_range = list(range(3, -1, -1))
-sewer_areas_urls = expand_urls(sewer_areas_base, url_range)
-
-sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/SS/FeatureServer/"
-url_range = list(range(7, 0, -1))
+# sewer_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/sewer_areas/FeatureServer/"
+# url_range = list(range(3, -1, -1))
+# sewer_areas_urls = expand_urls(sewer_areas_base, url_range)
+#
+# sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/SS/FeatureServer/"
+# url_range = list(range(7, 0, -1))
+# sewer_urls = expand_urls(sewer_base, url_range)
+#
+# sewer_areas_urls.extend(sewer_urls)
+# sewer_urls = sewer_areas_urls
+sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sewer_utilities/MapServer/"
+url_range = list(range(11, -1, -1))
 sewer_urls = expand_urls(sewer_base, url_range)
-
-sewer_areas_urls.extend(sewer_urls)
-sewer_urls = sewer_areas_urls
 
 # power and gas
 # protected by NDA, not for public distribution
