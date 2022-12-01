@@ -539,12 +539,12 @@ agreements_urls = expand_urls(agreements_base, url_range)
 
 
 # transportation
-# transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/transportation/FeatureServer/"
-transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/transportation1/FeatureServer/"
-url_range = list(range(15, -1, -1))
+# transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/transportation1/FeatureServer/"
+transportation_base = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation/MapServer/"
+url_range = list(range(16, -1, -1))
 transportation_urls = expand_urls(transportation_base, url_range)
-transportation_signs_url = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation_signs/MapServer/0"
-transportation_urls.insert(13, transportation_signs_url)
+# transportation_signs_url = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation_signs/MapServer/0"
+# transportation_urls.insert(13, transportation_signs_url)
 transportation_urls.insert(4, county_roads_url)
 transportation_urls.insert(4, odot_roads_url)
 transportation_urls.insert(6, transportation_urls[6])
