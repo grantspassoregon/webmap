@@ -2,6 +2,7 @@ from webmap import maps as m
 from webmap import refs as r
 from webmap import urls as u
 import logging
+import pprint
 
 
 plss_names = [
@@ -91,6 +92,8 @@ def build_template(gis):
     missing_sidewalks = gis.content.get(r.TEMPLATE_MISSING_SIDEWALKS)
     nhd = gis.content.get(r.TEMPLATE_NHD)
     oprd = gis.content.get(r.TEMPLATE_OPRD_HISTORIC_SITES)
+    parking = gis.content.get(r.TEMPLATE_PARKING)
+    parks = gis.content.get(r.TEMPLATE_PARKS)
     plss = gis.content.get(r.TEMPLATE_PLSS)
     power_gas = gis.content.get(r.TEMPLATE_POWER_GAS)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
@@ -99,8 +102,10 @@ def build_template(gis):
     stormwater = gis.content.get(r.TEMPLATE_STORMWATER)
     street_imagery = gis.content.get(r.TEMPLATE_STREET_IMAGERY)
     tax_parcels = gis.content.get(r.TEMPLATE_TAX_PARCELS)
+    traffic = gis.content.get(r.TEMPLATE_TRAFFIC)
     transportation = gis.content.get(r.TEMPLATE_TRANSPORTATION)
     water = gis.content.get(r.TEMPLATE_WATER)
+    wells = gis.content.get(r.TEMPLATE_OWRD_WELLS)
     wetlands = gis.content.get(r.TEMPLATE_WETLANDS)
     zoning = gis.content.get(r.TEMPLATE_ZONING)
 
@@ -131,6 +136,8 @@ def build_template(gis):
     template.update(build_template_dictionary("missing_sidewalks", missing_sidewalks))
     template.update(build_template_dictionary("nhd", nhd))
     template.update(build_template_dictionary("oprd", oprd))
+    template.update(build_template_dictionary("parking", parking))
+    template.update(build_template_dictionary("parks", parks))
     template.update(build_template_dictionary("plss", plss))
     template.update(build_template_dictionary("power_gas", power_gas))
     template.update(build_template_dictionary("schools", schools))
@@ -139,8 +146,10 @@ def build_template(gis):
     template.update(build_template_dictionary("stormwater", stormwater))
     template.update(build_template_dictionary("street_imagery", street_imagery))
     template.update(build_template_dictionary("tax_parcels", tax_parcels))
+    template.update(build_template_dictionary("traffic", traffic))
     template.update(build_template_dictionary("transportation", transportation))
     template.update(build_template_dictionary("water", water))
+    template.update(get_definition("wells", wells))
     template.update(build_template_dictionary("wetlands", wetlands))
     template.update(build_template_dictionary("zoning", zoning))
     return template
@@ -223,6 +232,10 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layer("nhd", u.nhd_urls, template))
         case "oprd":
             template_dict.update(update_layers("oprd", [""], template))
+        case "parking":
+            template_dict.update(update_layer("parking", u.parking_urls, template))
+        case "parks":
+            template_dict.update(update_layer("parks", u.parks_urls, template))
         case "plss":
             template_dict.update(update_layers("plss", plss_names, template))
         case "power_gas":
@@ -245,12 +258,16 @@ def build_template_dictionary(template_type, template):
             template_dict.update(
                 update_layer("tax_parcels", u.tax_parcel_urls, template)
             )
+        case "traffic":
+            template_dict.update(update_layer("traffic", u.traffic_urls, template))
         case "transportation":
             template_dict.update(
                 update_layer("transportation", u.transportation_urls, template)
             )
         case "water":
             template_dict.update(update_layer("water", u.water_urls, template))
+        case "wells":
+            template_dict.update(update_layer("wells", u.wells_urls, template))
         case "wetlands":
             template_dict.update(update_layers("wetlands", [""], template))
         case "zoning":
@@ -329,3 +346,13 @@ def update_layer(prefix, urls, template):
         # new_data.update({label_name[i]: ref_list[i]["layerDefinition"]})
 
     return new_data
+
+
+def get_definition(name, map):
+    # pp = pprint.PrettyPrinter(width=4)
+    # test_map = gis.content.get(map)
+    map_def = map.get_data()
+    # logging.debug(pp.pprint(map_def["operationalLayers"][0]["layers"]))
+    template = {}
+    template.update({name: map_def["operationalLayers"][0]["layers"]})
+    return template

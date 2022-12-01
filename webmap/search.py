@@ -191,6 +191,9 @@ search_list = [
     search_item(u.sewer_urls[0], "AssetID"),  # sewer basins
     search_item(u.cell_towers_url, "Street_Add"),
     search_item(u.cell_towers_url, "NOTES"),
+    search_item(u.parks_urls[2], "NAME"),  # parks (city)
+    search_item(u.parks_urls[1], "FACILITYID"),  # landscape (city maintained)
+    search_item(u.parks_urls[0], "NAME"),  # parks (county)
 ]
 
 

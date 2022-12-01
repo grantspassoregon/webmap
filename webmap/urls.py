@@ -44,11 +44,14 @@ library_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Libr
 
 # city boundaries
 
-boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
-urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
+# boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
+boundaries_base = (
+    "https://gisserver.grantspassoregon.gov/server/rest/services/boundaries/MapServer/"
+)
+# urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
 url_range = list(range(7, -1, -1))
 boundaries_urls = expand_urls(boundaries_base, url_range)
-boundaries_urls[4] = urban_reserve_url
+# boundaries_urls[4] = urban_reserve_url
 boundaries_urls.insert(1, library_url)
 
 # school districts
@@ -74,7 +77,10 @@ county_addresses_url = "https://services6.arcgis.com/Hf6u9DI4oZH2QTg9/arcgis/res
 ecso911_addresses_url = "https://gis.ecso911.com/server/rest/services/Hosted/JoCo_SiteAddress/FeatureServer/0"
 
 # land use
-land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
+# land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
+land_use_base = (
+    "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/"
+)
 url_range = [2, 1, 0]
 land_use_urls = expand_urls(land_use_base, url_range)
 land_use_urls.insert(2, county_addresses_url)
@@ -82,8 +88,14 @@ land_use_urls.insert(2, county_addresses_url)
 
 # tax parcels
 county_parcels_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Assessor_Taxlots/MapServer/0"
-city_parcels_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/taxlots/FeatureServer/0"
-assessment_maps_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/3"
+# city_parcels_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/taxlots/FeatureServer/0"
+city_parcels_url = (
+    "https://gisserver.grantspassoregon.gov/server/rest/services/taxlots/MapServer/0"
+)
+# assessment_maps_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/3"
+assessment_maps_url = (
+    "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/3"
+)
 tax_code_url = (
     "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Codes_Map/MapServer/7"
 )
@@ -214,6 +226,27 @@ dogami_hh_def = {
 nhd_base = "https://hydro.nationalmap.gov/arcgis/rest/services/NHDPlus_HR/MapServer/"
 url_range = list(range(12, -1, -1))
 nhd_urls = expand_urls(nhd_base, url_range)
+
+# owrd wells
+wells_base = "https://arcgis.wrd.state.or.us/arcgis/rest/services/dynamic/wl_well_logs_themes_WGS84/MapServer/"
+# well characteristics
+url_range = list(range(31, 20, -1))
+# type of work for geotechnical holes
+url_range.extend(list(range(18, 12, -1)))
+# type of work for Water/Monitor wells
+url_range.extend(list(range(11, 5, -1)))
+# type of log
+url_range.extend(list(range(4, 1, -1)))
+wells_urls = expand_urls(wells_base, url_range)
+
+wells_def = {
+    "id": "wl_well_logs_themes_WGS84_980",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 0.5,
+    "title": "Wells (ORWD)",
+    "url": "https://arcgis.wrd.state.or.us/arcgis/rest/services/dynamic/wl_well_logs_themes_WGS84/MapServer",
+    "visibility": False,
+}
 
 # deq
 # drinking water sources
@@ -496,11 +529,13 @@ url_range = list(range(13, -1, -1))
 marijuana_adult_urls = expand_urls(marijuana_adult_base, url_range)
 
 # agreements and financial
-# agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements_financial/FeatureServer/"
-agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
-url_range = list(range(5, -1, -1))
+# agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
+agreements_base = (
+    "https://gisserver.grantspassoregon.gov/server/rest/services/agreements/MapServer/"
+)
+url_range = list(range(4, -1, -1))
 agreements_urls = expand_urls(agreements_base, url_range)
-agreements_urls.remove(agreements_urls[0])
+# agreements_urls.remove(agreements_urls[0])
 
 
 # transportation
@@ -574,3 +609,28 @@ as_builts_base = (
 )
 url_range = [1, 0]
 as_builts_urls = expand_urls(as_builts_base, url_range)
+
+# parking
+parking_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/parking/FeatureServer/"
+url_range = [1, 0]
+parking_urls = expand_urls(parking_base, url_range)
+
+# parks
+parks_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/parks/FeatureServer/"
+url_range = [1, 0]
+parks_urls = expand_urls(parks_base, url_range)
+
+county_parks_url = (
+    "https://gis.co.josephine.or.us/arcgis/rest/services/Parks/Park_Areas/MapServer/0"
+)
+parks_urls.insert(0, county_parks_url)
+
+# topographic contours
+contours_base = "https://gisserver.grantspassoregon.gov/server/rest/services/topographic_contours/MapServer/"
+url_range = list(range(9, -1, -1))
+contours_urls = expand_urls(contours_base, url_range)
+
+# traffic reports
+traffic_base = "https://gisserver.grantspassoregon.gov/server/rest/services/traffic_reports/MapServer/"
+url_range = [1, 0]
+traffic_urls = expand_urls(traffic_base, url_range)
