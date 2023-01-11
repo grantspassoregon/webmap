@@ -12,7 +12,9 @@ def define_layer_names(urls, stub):
     return names
 
 
-def add_single_layer(key_name, url, group_lyr, template, title=None, visibility=None):
+def add_single_layer(
+    key_name, url, group_lyr, template, title=None, visibility=None, basemap=False
+):
     """
     Add single feature layer to parent group layer.
 
@@ -40,7 +42,8 @@ def add_single_layer(key_name, url, group_lyr, template, title=None, visibility=
         fc.update({"popupInfo": template[popup_name]})
     if label_name in template:
         fc.update({"layerDefinition": template[label_name]})
-    group_lyr["layers"].append(fc)
+    add_group(group_lyr, fc, basemap)
+    # group_lyr["layers"].append(fc)
 
 
 def layer_urls(item):
@@ -112,8 +115,37 @@ def group_layer(title):
 
 
 def clear(item):
+    """
+    Remove all layers from web map.
+
+    :param item: ArcGIS Item (web map).
+    :return: Removes layers from web map as side effect.
+    """
     map_item = WebMap(item)
     map_layers = map_item.layers
     for lyr in map_layers:
         map_item.remove_layer(lyr)
     map_item.update()
+    # Check to see if layers remain, call recursively if so
+    map_item = WebMap(item)
+    if len(map_item.layers) != 0:
+        clear(item)
+
+
+def add_group(base, map_group, basemap=False):
+    """
+    Adds group layer to parent group or project map.
+
+    :param base: Group layer or project map.
+    :param map_group: Group of layers to add to base.
+    :return: Updates map definition with new layers as side effect.
+    """
+    if basemap:
+        map_def = base.get_data()
+        if "operationalLayers" not in map_def:
+            map_def.update({"operationalLayers": map_group})
+        else:
+            map_def["operationalLayers"].append(map_group)
+        base.update({"text": str(map_def)})
+    else:
+        base["layers"].append(map_group)

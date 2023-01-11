@@ -1,6 +1,7 @@
 from webmap import maps as m
 from webmap import refs as r
 from webmap import urls as u
+from arcgis.mapping import WebMap
 import logging
 import pprint
 
@@ -94,6 +95,7 @@ def build_template(gis):
     oprd = gis.content.get(r.TEMPLATE_OPRD_HISTORIC_SITES)
     parking = gis.content.get(r.TEMPLATE_PARKING)
     parks = gis.content.get(r.TEMPLATE_PARKS)
+    planning = gis.content.get(r.TEMPLATE_PLANNING)
     plss = gis.content.get(r.TEMPLATE_PLSS)
     power_gas = gis.content.get(r.TEMPLATE_POWER_GAS)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
@@ -102,6 +104,8 @@ def build_template(gis):
     stormwater = gis.content.get(r.TEMPLATE_STORMWATER)
     street_imagery = gis.content.get(r.TEMPLATE_STREET_IMAGERY)
     tax_parcels = gis.content.get(r.TEMPLATE_TAX_PARCELS)
+    tourism_historic = gis.content.get(r.TEMPLATE_TOURISM_HISTORIC)
+    tourism_parks = gis.content.get(r.TEMPLATE_TOURISM_PARKS)
     traffic = gis.content.get(r.TEMPLATE_TRAFFIC)
     transportation = gis.content.get(r.TEMPLATE_TRANSPORTATION)
     water = gis.content.get(r.TEMPLATE_WATER)
@@ -138,6 +142,7 @@ def build_template(gis):
     template.update(build_template_dictionary("oprd", oprd))
     template.update(build_template_dictionary("parking", parking))
     template.update(build_template_dictionary("parks", parks))
+    template.update(build_template_dictionary("planning", planning))
     template.update(build_template_dictionary("plss", plss))
     template.update(build_template_dictionary("power_gas", power_gas))
     template.update(build_template_dictionary("schools", schools))
@@ -146,6 +151,8 @@ def build_template(gis):
     template.update(build_template_dictionary("stormwater", stormwater))
     template.update(build_template_dictionary("street_imagery", street_imagery))
     template.update(build_template_dictionary("tax_parcels", tax_parcels))
+    template.update(build_template_dictionary("tourism_historic", tourism_historic))
+    template.update(build_template_dictionary("tourism_parks", tourism_parks))
     template.update(build_template_dictionary("traffic", traffic))
     template.update(build_template_dictionary("transportation", transportation))
     template.update(build_template_dictionary("water", water))
@@ -176,7 +183,7 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layers("cell_towers", [""], template))
         case "city_boundaries":
             template_dict.update(
-                update_layer("city_boundaries", u.boundaries_urls, template)
+                get_layer_info(template, "city_boundaries", u.boundaries_urls)
             )
         case "deq_dw_source":
             template_dict.update(
@@ -217,7 +224,7 @@ def build_template_dictionary(template_type, template):
         case "hydric_soils":
             template_dict.update(update_layers("hydric_soils", [""], template))
         case "land_use":
-            template_dict.update(update_layer("land_use", u.land_use_urls, template))
+            template_dict.update(get_layer_info(template, "land_use", u.land_use_urls))
         case "landfill":
             template_dict.update(update_layer("landfill", u.landfill_urls, template))
         case "marijuana_adult_use":
@@ -236,6 +243,8 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layer("parking", u.parking_urls, template))
         case "parks":
             template_dict.update(update_layer("parks", u.parks_urls, template))
+        case "planning":
+            template_dict.update(get_layer_info(template, "planning", u.planning_urls))
         case "plss":
             template_dict.update(update_layers("plss", plss_names, template))
         case "power_gas":
@@ -257,6 +266,16 @@ def build_template_dictionary(template_type, template):
         case "tax_parcels":
             template_dict.update(
                 update_layer("tax_parcels", u.tax_parcel_urls, template)
+            )
+        case "tourism_historic":
+            template_dict.update(
+                get_layer_info(
+                    template, "tourism_historic", u.historic_cultural_tourism_urls
+                )
+            )
+        case "tourism_parks":
+            template_dict.update(
+                get_layer_info(template, "tourism_parks", u.tourism_parks_urls)
             )
         case "traffic":
             template_dict.update(update_layer("traffic", u.traffic_urls, template))
@@ -356,3 +375,43 @@ def get_definition(name, map):
     template = {}
     template.update({name: map_def["operationalLayers"][0]["layers"]})
     return template
+
+
+def get_layer_info(item, prefix, urls):
+    """
+    Read a template file, match layers to a list of urls and return a dictionary
+    of popup info and layer definitions.
+
+    :param item: Template web map to read layer info from.
+    :param prefix: Short name to prefix to layers for storage in the template dictionary.
+    :type prefix: String
+    :param urls: List of urls stored on template web map.
+    :type urls: List with String elements readable as urls.
+    :return: Dictionary of layer info.
+    :rtype: Dictionary with String identifiers as keys, and popup info or layer definitions as values.
+    """
+    popup_name = layer_tags(prefix, urls, "_popup")
+    label_name = layer_tags(prefix, urls, "_label")
+    wm = WebMap(item)
+    lyrs = wm.layers
+    layer_info = recursive_layer_info(lyrs, popup_name, label_name)
+    return layer_info
+
+
+def recursive_layer_info(layers, popup_name, label_name, layer_info={}, index=0):
+    for lyr in layers:
+        logging.debug("Reading layer %s.", lyr["title"])
+        flag = False
+        if "popupInfo" in lyr:
+            layer_info.update({popup_name[index]: lyr["popupInfo"]})
+            flag = True
+        if "layerDefinition" in lyr:
+            layer_info.update({label_name[index]: lyr["layerDefinition"]})
+            flag = True
+        if flag:
+            index += 1
+        if lyr["layerType"] in ["GroupLayer"]:
+            recursive_layer_info(
+                lyr["layers"], popup_name, label_name, layer_info, index
+            )
+    return layer_info

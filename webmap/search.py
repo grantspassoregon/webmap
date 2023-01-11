@@ -26,9 +26,10 @@ def search_item(url, field, matchExists=False, field_type="esriFieldTypeString")
 # each element in list in a list specifying:
 # 1) url, 2) field of layer to search, 3) exactMatch bool, 4) field type
 search_list = [
-    search_item(u.land_use_urls[3], "FULLADDR"),
-    search_item(u.land_use_urls[2], "FULLADDR"),
-    search_item(u.land_use_urls[2], "TAXLOT"),
+    search_item(u.land_use_urls[3], "StreetAddressLabel"),
+    search_item(u.land_use_urls[3], "CompleteStreetAddress"),
+    search_item(u.land_use_urls[2], "address"),
+    search_item(u.land_use_urls[2], "taxlot"),
     search_item(u.land_use_urls[1], "NAME"),
     search_item(u.land_use_urls[0], "FACILITYID"),
     search_item(u.land_use_urls[0], "MAPNUMX"),
@@ -125,14 +126,15 @@ search_list = [
     search_item(u.transportation_urls[19], "FACILITYID"),  # poles
     search_item(u.transportation_urls[19], "HistoricID"),
     search_item(u.transportation_urls[18], "LAYER"),  # bus stops
-    search_item(u.transportation_urls[18], "ROUTE_NUMBER"),  # bus routes
-    search_item(u.transportation_urls[15], "NAME"),  # trails
-    search_item(u.transportation_urls[14], "ADOPTED_BY"),  # street adoption
-    search_item(u.transportation_urls[14], "FULLNAME"),
-    search_item(u.transportation_urls[13], "FULLNAME"),  # PCI
-    search_item(u.transportation_urls[12], "AssetID"),  # Streets (City)
-    search_item(u.transportation_urls[12], "FULLNAME"),
-    search_item(u.transportation_urls[9], "full_name"),  # Streets (County)
+    search_item(u.transportation_urls[17], "ROUTE_NUMBER"),  # bus routes
+    search_item(u.transportation_urls[14], "NAME"),  # trails
+    search_item(u.transportation_urls[13], "ADOPTED_BY"),  # street adoption
+    search_item(u.transportation_urls[13], "FULLNAME"),
+    search_item(u.transportation_urls[12], "FULLNAME"),  # PCI
+    search_item(u.transportation_urls[11], "AssetID"),  # Streets (City)
+    search_item(u.transportation_urls[11], "FULLNAME"),
+    search_item(u.transportation_urls[8], "full_name"),  # Streets (County)
+    search_item(u.transportation_urls[8], "name"),
     search_item(u.transportation_urls[5], "FACILITYID"),  # Sidewalks
     search_item(u.transportation_urls[4], "FACILITYID"),  # Sidewalk curb ramps
     search_item(u.transportation_urls[2], "RR_NAME"),  # Railroads
@@ -158,20 +160,21 @@ search_list = [
     search_item(u.stormwater_urls[10], "FACILITYID"),  # stormwater inlets
     search_item(u.stormwater_urls[10], "HistoricID"),
     search_item(u.stormwater_urls[9], "FACILITYID"),  # stormwater cleanouts
+    search_item(u.stormwater_urls[9], "HistoricID"),
     search_item(u.stormwater_urls[8], "FACILITYID"),  # stormwater valves
+    search_item(u.stormwater_urls[8], "HistoricID"),
     search_item(u.stormwater_urls[7], "FACILITYID"),  # stormwater outfalls
     search_item(u.stormwater_urls[7], "HistoricID"),
     search_item(u.stormwater_urls[6], "FACILITYID"),  # stormwater fittings
     search_item(u.stormwater_urls[5], "FACILITYID"),  # stormwater culverts
     search_item(u.stormwater_urls[4], "FACILITYID"),  # stormwater open drains
-    search_item(u.stormwater_urls[4], "HistoricID"),
     search_item(u.stormwater_urls[3], "FACILITYID"),  # stormwater gravity mains
     search_item(u.stormwater_urls[3], "HistoricID"),
     search_item(u.stormwater_urls[2], "FACILITYID"),  # stormwater detention
     search_item(u.stormwater_urls[2], "HistoricID"),
     search_item(u.stormwater_urls[1], "SUB_BASIN_ID"),  # stormwater sub-basins
     search_item(u.stormwater_urls[1], "SW_BASIN"),
-    search_item(u.stormwater_urls[0], "SUB_BASIN_ID"),  # stormwater basins
+    search_item(u.stormwater_urls[0], "BASIN_ID"),  # stormwater basins
     search_item(u.sewer_urls[11], "AssetID"),  # sewer manholes
     search_item(u.sewer_urls[11], "HistoricID"),
     search_item(u.sewer_urls[10], "FACILITYID"),  # sewer fittings
@@ -188,8 +191,10 @@ search_list = [
     search_item(u.sewer_urls[4], "AssetID"),  # sewer pressurized mains
     search_item(u.sewer_urls[4], "FACILITYID"),
     search_item(u.sewer_urls[1], "AssetID"),  # sewer network structures
+    search_item(u.sewer_urls[1], "FACILITYID"),
     search_item(u.sewer_urls[0], "AssetID"),  # sewer basins
-    search_item(u.cell_towers_url, "Street_Add"),
+    search_item(u.sewer_urls[0], "REF_AREA"),
+    search_item(u.cell_towers_url, "Street_Add"),  # cell towers
     search_item(u.cell_towers_url, "NOTES"),
     search_item(u.parks_urls[2], "NAME"),  # parks (city)
     search_item(u.parks_urls[1], "FACILITYID"),  # landscape (city maintained)

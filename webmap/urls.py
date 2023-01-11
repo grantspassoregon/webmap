@@ -40,19 +40,25 @@ url_range = [10, 9, 8, 4, 3, 2, 1]
 aiannha_urls = expand_urls(aiannha_base, url_range)
 
 # library district
-library_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Library_District/MapServer/0"
+library_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Library_District/MapServer/2"
+library_def = {
+    "id": "Library_District_4708",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 0.5,
+    "title": "Library District",
+    "url": "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Library_District/MapServer",
+    "visibility": False,
+}
 
 # city boundaries
 
 # boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
-boundaries_base = (
-    "https://gisserver.grantspassoregon.gov/server/rest/services/boundaries/MapServer/"
-)
+boundaries_base = "https://gisserver.grantspassoregon.gov/server/rest/services/city_boundaries/MapServer/"
 # urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
 url_range = list(range(7, -1, -1))
 boundaries_urls = expand_urls(boundaries_base, url_range)
 # boundaries_urls[4] = urban_reserve_url
-boundaries_urls.insert(1, library_url)
+# boundaries_urls.insert(1, library_url)
 
 # school districts
 
@@ -83,7 +89,7 @@ land_use_base = (
 )
 url_range = [2, 1, 0]
 land_use_urls = expand_urls(land_use_base, url_range)
-land_use_urls.insert(2, county_addresses_url)
+land_use_urls.insert(2, ecso911_addresses_url)
 
 
 # tax parcels
@@ -254,6 +260,67 @@ deq_drinking_water_source_base = "https://arcgis.deq.state.or.us/arcgis/rest/ser
 url_range = [7, 6, 4, 3, 2]
 deq_drinking_water_source_urls = expand_urls(deq_drinking_water_source_base, url_range)
 
+
+deq_gw_2yrtot_def = {
+    "id": "DrinkingWaterTestService_2020",
+    "layerType": "ArcGISMapServiceLayer",
+    "layers": [
+        {
+            "defaultVisibility": True,
+            "disablePopup": False,
+            "id": 0,
+            "layerDefinition": {
+                "drawingInfo": {"showLabels": True, "transparency": 0},
+                "source": {"mapLayerId": 0, "type": "mapLayer"},
+            },
+            "maxScale": 0,
+            "minScale": 0,
+            "name": "Groundwater " "Drinking " "Water " "Source " "Area " "outlines",
+            "parentLayerId": -1,
+            "showLegend": True,
+            "subLayerIds": [1],
+        },
+        {
+            "defaultVisibility": True,
+            "disablePopup": False,
+            "id": 1,
+            "layerDefinition": {
+                "drawingInfo": {
+                    "renderer": {
+                        "description": "",
+                        "label": "",
+                        "symbol": {
+                            "color": [0, 0, 0, 0],
+                            "outline": {
+                                "color": [255, 255, 0, 255],
+                                "style": "esriSLSSolid",
+                                "type": "esriSLS",
+                                "width": 1.5,
+                            },
+                            "style": "esriSFSSolid",
+                            "type": "esriSFS",
+                        },
+                        "type": "simple",
+                    },
+                    "showLabels": True,
+                    "transparency": 0,
+                },
+                "source": {"mapLayerId": 1, "type": "mapLayer"},
+            },
+            "maxScale": 0,
+            "minScale": 0,
+            "name": "2yrTOT",
+            "parentLayerId": 0,
+            "showLegend": True,
+        },
+    ],
+    "opacity": 1,
+    "title": "DrinkingWaterTestService",
+    "url": "https://arcgis.deq.state.or.us/arcgis/rest/services/DEQ_Services/DrinkingWaterTestService/MapServer",
+    "visibility": True,
+    "visibleLayers": [0, 1],
+}
+
 # drinking water protection
 # deq_drinking_water_protection_base = "https://arcgis.deq.state.or.us/arcgis/rest/services/WQ/DrinkingWaterProtectionPCS/MapServer/"
 # url_range = list(range(31, 22, -1))
@@ -324,7 +391,7 @@ ecso911_law_url = (
 fs_wildfire_potential_def = {
     "id": "RMRS_WRC_WildfireHazardPotential_5283",
     "layerType": "ArcGISImageServiceLayer",
-    "opacity": 1,
+    "opacity": 0.5,
     "title": "Wildfire Hazard Potential (FS)",
     "url": "https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_WildfireHazardPotential/ImageServer",
     "visibility": False,
@@ -333,7 +400,7 @@ fs_wildfire_potential_def = {
 fs_wildfire_housing_def = {
     "id": "RMRS_WRC_HousingUnitRisk_1007",
     "layerType": "ArcGISImageServiceLayer",
-    "opacity": 1,
+    "opacity": 0.5,
     "title": "Wildfire Housing Unit Risk (FS)",
     "url": "https://apps.fs.usda.gov/fsgisx01/rest/services/RDW_Wildfire/RMRS_WRC_HousingUnitRisk/ImageServer",
     "visibility": False,
@@ -511,6 +578,8 @@ nps_public_trails_url = "https://mapservices.nps.gov/arcgis/rest/services/Nation
 historic_cultural_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/historic_cultural_areas/FeatureServer/"
 url_range = list(range(3, -1, -1))
 historic_cultural_areas_urls = expand_urls(historic_cultural_areas_base, url_range)
+url_range = [3, 1, 0]
+historic_cultural_tourism_urls = expand_urls(historic_cultural_areas_base, url_range)
 # historic_cultural_areas_urls.insert(2, oprd_historic_sites_url)
 
 # zoning
@@ -519,7 +588,8 @@ url_range = list(range(4, -1, -1))
 zoning_urls = expand_urls(zoning_base, url_range)
 
 # planning misc
-planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
+# planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
+planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
 url_range = list(range(5, -1, -1))
 planning_urls = expand_urls(planning_group_base, url_range)
 
@@ -624,6 +694,7 @@ county_parks_url = (
     "https://gis.co.josephine.or.us/arcgis/rest/services/Parks/Park_Areas/MapServer/0"
 )
 parks_urls.insert(0, county_parks_url)
+tourism_parks_urls = [transportation_urls[14], parks_urls[0], parks_urls[2]]
 
 # topographic contours
 contours_base = "https://gisserver.grantspassoregon.gov/server/rest/services/topographic_contours/MapServer/"
