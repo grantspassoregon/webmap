@@ -69,6 +69,7 @@ def build_template(gis):
 
     :return: Updates the template.json file.
     """
+    logging.info("Loading template layers from %s.", gis)
     agreements = gis.content.get(r.TEMPLATE_AGREEMENTS)
     as_builts = gis.content.get(r.TEMPLATE_AS_BUILTS)
     aiannha = gis.content.get(r.TEMPLATE_AIANNHA)
@@ -99,6 +100,7 @@ def build_template(gis):
     plss = gis.content.get(r.TEMPLATE_PLSS)
     power_gas = gis.content.get(r.TEMPLATE_POWER_GAS)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
+    sketch = gis.content.get(r.TEMPLATE_SKETCH)
     sewer = gis.content.get(r.TEMPLATE_SEWER)
     soils = gis.content.get(r.TEMPLATE_SOILS)
     stormwater = gis.content.get(r.TEMPLATE_STORMWATER)
@@ -113,6 +115,7 @@ def build_template(gis):
     wetlands = gis.content.get(r.TEMPLATE_WETLANDS)
     zoning = gis.content.get(r.TEMPLATE_ZONING)
 
+    logging.info("Building template dictionary.")
     template = {}
     template.update(build_template_dictionary("agreements", agreements))
     template.update(build_template_dictionary("as_builts", as_builts))
@@ -146,6 +149,7 @@ def build_template(gis):
     template.update(build_template_dictionary("plss", plss))
     template.update(build_template_dictionary("power_gas", power_gas))
     template.update(build_template_dictionary("schools", schools))
+    template.update(build_template_dictionary("sketch", sketch))
     template.update(build_template_dictionary("sewer", sewer))
     template.update(build_template_dictionary("soils", soils))
     template.update(build_template_dictionary("stormwater", stormwater))
@@ -159,6 +163,7 @@ def build_template(gis):
     template.update(get_definition("wells", wells))
     template.update(build_template_dictionary("wetlands", wetlands))
     template.update(build_template_dictionary("zoning", zoning))
+    logging.info("Template dictionary complete.")
     return template
     # file_name = os.path.join(TEMPLATE_DIR, "template.json")
     # with open(file_name, "w") as fp:
@@ -253,6 +258,8 @@ def build_template_dictionary(template_type, template):
             template_dict.update(
                 update_layer("schools", u.school_districts_urls, template)
             )
+        case "sketch":
+            template_dict.update(get_layer_info(template, "sketch", u.sketch_urls))
         case "sewer":
             template_dict.update(update_layer("sewer", u.sewer_urls, template))
         case "soils":

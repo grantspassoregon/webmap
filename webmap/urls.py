@@ -180,7 +180,8 @@ dsl_wetlands_url = "https://maps.dsl.state.or.us/arcgis/rest/services/NWI/MapSer
 
 # Soils
 dsl_hydric_soils_url = (
-    "https://maps.dsl.state.or.us/arcgis/rest/services/SwiHydric/MapServer/0"
+    # "https://maps.dsl.state.or.us/arcgis/rest/services/SwiHydric/MapServer/0"
+    "https://maps.dsl.state.or.us/arcgis/rest/services/SWISoil23/MapServer/0"
 )
 
 # esri usa soils map units
@@ -705,3 +706,10 @@ contours_urls = expand_urls(contours_base, url_range)
 traffic_base = "https://gisserver.grantspassoregon.gov/server/rest/services/traffic_reports/MapServer/"
 url_range = [1, 0]
 traffic_urls = expand_urls(traffic_base, url_range)
+
+
+# staff editing
+# sketch points
+sketch_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sketch_editing/FeatureServer/"
+url_range = [2, 1, 0]
+sketch_urls = expand_urls(sketch_base, url_range)
