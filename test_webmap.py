@@ -68,6 +68,13 @@ def test_city_basemap(public=False):
     m.city_basemap(test_map, template, internal, public)
 
 
+def test_editing_map(public=False):
+    test_map = gis.content.get(r.TEST_CITY_BASEMAP)
+    template = t.build_template(gis)
+    w.clear(test_map)
+    m.editing_map(test_map, template, internal, public)
+
+
 def test_search(map):
     s.add_search(map)
 

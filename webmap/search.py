@@ -252,3 +252,13 @@ def add_search(project_map, search_list=search_list):
         "layers": properties,
     }
     project_map.update({"text": str(map_def)})
+
+
+editor_list = [
+    search_item(u.address_editing_urls[1], "address_label"),
+    search_item(u.address_editing_urls[0], "StreetAddressLabel"),
+    search_item(u.address_editing_urls[0], "CompleteStreetAddress"),
+]
+
+search_edit_list = search_list
+search_edit_list.extend(editor_list)

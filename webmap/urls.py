@@ -82,6 +82,11 @@ school_districts_urls.append(school_locations)
 county_addresses_url = "https://services6.arcgis.com/Hf6u9DI4oZH2QTg9/arcgis/rest/services/Josephine_County_Site_Address/FeatureServer/0"
 ecso911_addresses_url = "https://gis.ecso911.com/server/rest/services/Hosted/JoCo_SiteAddress/FeatureServer/0"
 
+# address editing
+address_editing_url = "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/FeatureServer/0"
+address_verification_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/address_verification/FeatureServer/0"
+address_editing_urls = [address_editing_url, address_verification_url]
+
 # land use
 # land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
 land_use_base = (
@@ -348,7 +353,9 @@ deq_hydro_2022_urls = expand_urls(deq_hydro_2022_base, url_range)
 
 
 # dsl essential salmon habitat
-dsl_esh_base = "https://maps.dsl.state.or.us/arcgis/rest/services/ESH/MapServer/"
+dsl_esh_base = (
+    "https://maps.dsl.state.or.us/arcgis/rest/services/EshAndSpecies/MapServer/"
+)
 url_range = list(range(9, 0, -1))
 dsl_esh_urls = expand_urls(dsl_esh_base, url_range)
 

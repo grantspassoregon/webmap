@@ -1768,6 +1768,60 @@ def sketch_layers(base, template, internal, public=False, basemap=False):
         logging.info("Sketch editing added to map.")
 
 
+def address_editing_layers(base, template, internal, basemap=False):
+    """
+    Address editing layers for the City of Grants Pass, Oregon.
+
+    :param base: Group layer definition or map project target for layers.
+    :param template: Reference template for map layers.
+    :type template: JSON dictionary
+    :param internal: Portal connection for internal access layers.
+    :type internal: ArcGIS GIS connection.
+    :param basemap: Indicates whether appending to group layer or project map.
+    :type basemap: Boolean
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+
+    popup_names = t.layer_tags("address_editing", u.address_editing_urls, "_popup")
+    label_names = t.layer_tags("address_editing", u.address_editing_urls, "_label")
+    url_list = u.address_editing_urls
+
+    group_name = "Address Editing"
+    map_group = w.group_layer(group_name)
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url, internal)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], group_name)
+        map_group["layers"].append(fc)
+    logging.info("Appending layers to %s definition.", group_name)
+    w.add_group(base, map_group, basemap)
+    logging.info("Address editing added to map.")
+
+
+def editing_map(project_map, template, internal, public=False):
+    """
+    Add common reference layers to web map.
+
+    :param project_map: Web map to update with reference layers.
+    :return: Updates the web map, adding reference layers.
+    :rtype: None.
+    """
+    map_name = "City Web Viewer"
+    logging.info("Building %s.", map_name)
+
+    city_basemap(project_map, template, internal, public)
+    address_editing_layers(project_map, template, internal, True)
+
+    logging.info("Adding editing search.")
+    s.add_search(project_map, s.search_edit_list)
+
+
 def city_basemap(project_map, template, internal, public=False):
     """
     Add common reference layers to web map.
