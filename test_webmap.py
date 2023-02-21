@@ -75,6 +75,14 @@ def test_editing_map(public=False):
     m.editing_map(test_map, template, internal, public)
 
 
+def test_editing_subset(public=False):
+    test_map = gis.content.get(r.TEST_CITY_BASEMAP)
+    template = t.build_template(gis)
+    w.clear(test_map)
+    m.address_editing_layers(test_map, template, internal, True)
+    m.sketch_layers(test_map, template, internal, public, True)
+
+
 def test_search(map):
     s.add_search(map)
 

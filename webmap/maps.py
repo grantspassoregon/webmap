@@ -730,7 +730,7 @@ def planning_layers(base, template, basemap=False):
 
     group_name = "Planning"
     map_group = w.group_layer(group_name)
-    conservation = "Proposed Conservation District"
+    conservation = "Lawnridge-Washington Conservation District"
     conservation_group = w.group_layer(conservation)
     as_builts_layers(map_group, template)
     logging.info("As builts added to %s.", group_name)
@@ -744,6 +744,10 @@ def planning_layers(base, template, basemap=False):
             fc.update({"layerDefinition": template[label_names[index]]})
         logging.debug("Appending %s to %s layer.", fc["title"], group_name)
         if index in [4, 5]:
+            if fc["title"] == "Proposed Conservation District":
+                fc.update(
+                    {"title": "Lawnridge-Washington Conservation District Boundary"}
+                )
             conservation_group["layers"].append(fc)
         else:
             map_group["layers"].append(fc)

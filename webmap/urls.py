@@ -717,6 +717,7 @@ traffic_urls = expand_urls(traffic_base, url_range)
 
 # staff editing
 # sketch points
-sketch_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sketch_editing/FeatureServer/"
+sketch_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/markup_editing/FeatureServer/"
+# sketch_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sketch_editing/FeatureServer/"
 url_range = [2, 1, 0]
 sketch_urls = expand_urls(sketch_base, url_range)
