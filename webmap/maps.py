@@ -245,10 +245,12 @@ def boundary_layers(base, template, basemap=False):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
-        if fc["title"] == "City Limits 2016":
-            fc.update({"title": "City Limits"})
+        if fc["title"] == "City Limits 2023":
+            # fc.update({"title": "City Limits"})
+            fc.update({"visibility": True})
         if fc["title"] == "UGB 2014":
             fc.update({"title": "Urban Growth Boundary"})
+            fc.update({"visibility": True})
         if fc["title"] == "Urban Reserve 2014":
             fc.update({"title": "Urban Reserve"})
         if fc["title"] == "GP_NSWE_Town_Sections":

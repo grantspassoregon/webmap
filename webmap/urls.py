@@ -88,10 +88,10 @@ address_verification_url = "https://gisserver.grantspassoregon.gov/server/rest/s
 address_editing_urls = [address_editing_url, address_verification_url]
 
 # land use
-# land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
-land_use_base = (
-    "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/"
-)
+land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
+# land_use_base = (
+#     "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/"
+# )
 url_range = [2, 1, 0]
 land_use_urls = expand_urls(land_use_base, url_range)
 land_use_urls.insert(2, ecso911_addresses_url)
@@ -103,10 +103,10 @@ county_parcels_url = "https://gis.co.josephine.or.us/arcgis/rest/services/Assess
 city_parcels_url = (
     "https://gisserver.grantspassoregon.gov/server/rest/services/taxlots/MapServer/0"
 )
-# assessment_maps_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/3"
-assessment_maps_url = (
-    "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/3"
-)
+assessment_maps_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/3"
+# assessment_maps_url = (
+#     "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/3"
+# )
 tax_code_url = (
     "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Codes_Map/MapServer/7"
 )
