@@ -65,7 +65,8 @@ boundaries_urls = expand_urls(boundaries_base, url_range)
 # josephine county
 school_locations = "https://gis.co.josephine.or.us/arcgis/rest/services/Planning/SchoolLocatons/MapServer/0"
 # elementary schools
-school_zones = "https://gis.co.josephine.or.us/arcgis/rest/services/Planning/School_Zones/MapServer/0"
+# school_zones = "https://gis.co.josephine.or.us/arcgis/rest/services/Planning/School_Zones/MapServer/0"
+school_zones = "https://gis.co.josephine.or.us/arcgis/rest/services/Boundary/School_Zones/MapServer/0"
 
 # city schools data
 school_districts_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/school_district/FeatureServer/"
@@ -606,6 +607,11 @@ marijuana_adult_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/res
 url_range = list(range(13, -1, -1))
 marijuana_adult_urls = expand_urls(marijuana_adult_base, url_range)
 
+# revision of marijuana permitting buffers 3/02/2023
+marijuana_permitting_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/marijuana_permitting/FeatureServer/"
+url_range = list(range(13, -1, -1))
+marijuana_permitting_urls = expand_urls(marijuana_permitting_base, url_range)
+
 # agreements and financial
 # agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
 agreements_base = (
@@ -646,7 +652,8 @@ water_urls.insert(2, water_urls[2])
 
 # stormwater
 
-stormwater_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/MapServer/"
+# stormwater_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/MapServer/"
+stormwater_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/stormwater/FeatureServer/"
 url_range = list(range(11, -1, -1))
 stormwater_urls = expand_urls(stormwater_base, url_range)
 

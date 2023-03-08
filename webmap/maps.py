@@ -653,6 +653,44 @@ def marijuana_adult_use_layers(base, template, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
+def marijuana_permitting_layers(base, template, basemap=False):
+    """
+    Locations and buffers for marijuana business permitting at the City of Grants Pass.
+
+    :param base: Group layer definition or map project target for layers.
+    :param template: Reference template for map layers.
+    :param basemap: Indicates whether appending to group layer or project map.
+    :type basemap: Boolean
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    url_list = u.marijuana_permitting_urls
+    popup_names = t.layer_tags("marijuana_permitting", url_list, "_popup")
+    label_names = t.layer_tags("marijuana_permitting", url_list, "_label")
+
+    group_name = "Marijuana Business Permitting"
+    map_group = w.group_layer(group_name)
+    buffers = w.group_layer("Location Buffer Restrictions")
+    permissible = w.group_layer("Potentially Permissible Areas")
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], group_name)
+        if index <= 11:
+            buffers["layers"].append(fc)
+        else:
+            permissible["layers"].append(fc)
+    map_group["layers"].append(buffers)
+    map_group["layers"].append(permissible)
+    logging.info("Appending layers to %s definition.", group_name)
+    w.add_group(base, map_group, basemap)
+
+
 def agreements_layers(base, template, basemap=False):
     """
     Financial and planning agreements with the City of Grants Pass.
@@ -758,6 +796,8 @@ def planning_layers(base, template, basemap=False):
     logging.info("Zoning layers added to %s.", group_name)
     marijuana_adult_use_layers(map_group, template)
     logging.info("Marijuana and adult use layers added to %s.", group_name)
+    marijuana_permitting_layers(map_group, template)
+    logging.info("Marijuana business permitting layers added to %s.", group_name)
     agreements_layers(map_group, template)
     logging.info("Agreements and financial layers added to %s.", group_name)
     historic_cultural_layers(map_group, template)

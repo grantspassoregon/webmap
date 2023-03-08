@@ -92,6 +92,7 @@ def build_template(gis):
     land_use = gis.content.get(r.TEMPLATE_LAND_USE)
     landfill = gis.content.get(r.TEMPLATE_LANDFILL)
     marijuana_adult_use = gis.content.get(r.TEMPLATE_MARIJUANA_ADULT_USE)
+    marijuana_permitting = gis.content.get(r.TEMPLATE_MARIJUANA_PERMITTING)
     missing_sidewalks = gis.content.get(r.TEMPLATE_MISSING_SIDEWALKS)
     nhd = gis.content.get(r.TEMPLATE_NHD)
     oprd = gis.content.get(r.TEMPLATE_OPRD_HISTORIC_SITES)
@@ -141,6 +142,9 @@ def build_template(gis):
     template.update(build_template_dictionary("landfill", landfill))
     template.update(
         build_template_dictionary("marijuana_adult_use", marijuana_adult_use)
+    )
+    template.update(
+        build_template_dictionary("marijuana_permitting", marijuana_permitting)
     )
     template.update(build_template_dictionary("missing_sidewalks", missing_sidewalks))
     template.update(build_template_dictionary("nhd", nhd))
@@ -242,6 +246,12 @@ def build_template_dictionary(template_type, template):
             template_dict.update(
                 update_layer("marijuana_adult_use", u.marijuana_adult_urls, template)
             )
+        case "marijuana_permitting":
+            template_dict.update(
+                get_layer_info(
+                    template, "marijuana_permitting", u.marijuana_permitting_urls
+                )
+            )
         case "missing_sidewalks":
             template_dict.update(
                 update_layer_info(m.missing_sidewalks_layer_names, template)
@@ -272,7 +282,7 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layers("soils", [""], template))
         case "stormwater":
             template_dict.update(
-                update_layer("stormwater", u.stormwater_urls, template)
+                get_layer_info(template, "stormwater", u.stormwater_urls)
             )
         case "street_imagery":
             template_dict.update(update_layers("street_imagery", [""], template))
