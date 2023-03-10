@@ -217,7 +217,7 @@ def build_template_dictionary(template_type, template):
                 update_layer("deq_hydro_2022", u.deq_hydro_2022_urls, template)
             )
         case "dsl_esh":
-            template_dict.update(update_layer("dsl_esh", u.dsl_esh_urls, template))
+            template_dict.update(get_layer_info(template, "dsl_esh", u.dsl_esh_urls))
         case "ecso911_ems":
             template_dict.update(update_layers("ecso911_ems", [""], template))
         case "ecso911_fire":
@@ -272,7 +272,7 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layer("power_gas", u.power_gas_urls, template))
         case "schools":
             template_dict.update(
-                update_layer("schools", u.school_districts_urls, template)
+                get_layer_info(template, "schools", u.school_districts_urls)
             )
         case "sketch":
             template_dict.update(get_layer_info(template, "sketch", u.sketch_urls))

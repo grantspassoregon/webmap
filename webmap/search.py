@@ -26,7 +26,7 @@ def search_item(url, field, matchExists=False, field_type="esriFieldTypeString")
 # each element in list in a list specifying:
 # 1) url, 2) field of layer to search, 3) exactMatch bool, 4) field type
 search_list = [
-    search_item(u.land_use_urls[3], "StreetAddressLabel"),
+    search_item(u.land_use_urls[3], "FULLADDRESS"),
     search_item(u.land_use_urls[3], "CompleteStreetAddress"),
     search_item(u.land_use_urls[2], "address"),
     search_item(u.land_use_urls[2], "taxlot"),
