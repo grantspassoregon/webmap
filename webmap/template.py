@@ -112,6 +112,7 @@ def build_template(gis):
     tourism_parks = gis.content.get(r.TEMPLATE_TOURISM_PARKS)
     traffic = gis.content.get(r.TEMPLATE_TRAFFIC)
     transportation = gis.content.get(r.TEMPLATE_TRANSPORTATION)
+    transportation_editing = gis.content.get(r.TEMPLATE_TRANSPORTATION_EDITING)
     water = gis.content.get(r.TEMPLATE_WATER)
     wells = gis.content.get(r.TEMPLATE_OWRD_WELLS)
     wetlands = gis.content.get(r.TEMPLATE_WETLANDS)
@@ -165,6 +166,9 @@ def build_template(gis):
     template.update(build_template_dictionary("tourism_parks", tourism_parks))
     template.update(build_template_dictionary("traffic", traffic))
     template.update(build_template_dictionary("transportation", transportation))
+    template.update(
+        build_template_dictionary("transportation_editing", transportation_editing)
+    )
     template.update(build_template_dictionary("water", water))
     template.update(get_definition("wells", wells))
     template.update(build_template_dictionary("wetlands", wetlands))
@@ -305,6 +309,12 @@ def build_template_dictionary(template_type, template):
         case "transportation":
             template_dict.update(
                 update_layer("transportation", u.transportation_urls, template)
+            )
+        case "transportation_editing":
+            template_dict.update(
+                get_layer_info(
+                    template, "transportation_editing", u.transportation_editing
+                )
             )
         case "water":
             template_dict.update(update_layer("water", u.water_urls, template))

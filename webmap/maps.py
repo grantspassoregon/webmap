@@ -246,7 +246,7 @@ def boundary_layers(base, template, basemap=False):
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
         if fc["title"] == "City Limits 2023":
-            # fc.update({"title": "City Limits"})
+            fc.update({"title": "City Limits"})
             fc.update({"visibility": True})
         if fc["title"] == "UGB 2014":
             fc.update({"title": "Urban Growth Boundary"})
@@ -681,7 +681,7 @@ def marijuana_permitting_layers(base, template, basemap=False):
         if label_names[index] in template:
             fc.update({"layerDefinition": template[label_names[index]]})
         logging.debug("Appending %s to %s layer.", fc["title"], group_name)
-        if index <= 11:
+        if index <= 16:
             buffers["layers"].append(fc)
         else:
             permissible["layers"].append(fc)
@@ -796,8 +796,8 @@ def planning_layers(base, template, basemap=False):
     logging.info("Zoning layers added to %s.", group_name)
     marijuana_adult_use_layers(map_group, template)
     logging.info("Marijuana and adult use layers added to %s.", group_name)
-    # marijuana_permitting_layers(map_group, template)
-    # logging.info("Marijuana business permitting layers added to %s.", group_name)
+    marijuana_permitting_layers(map_group, template)
+    logging.info("Marijuana business permitting layers added to %s.", group_name)
     agreements_layers(map_group, template)
     logging.info("Agreements and financial layers added to %s.", group_name)
     historic_cultural_layers(map_group, template)
@@ -1393,26 +1393,70 @@ def transportation_layers(base, template, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
-def sewer_layers(base, template, basemap=False):
+def transportation_editing(base, template, internal, basemap=False):
+    """
+    Transportation editing layers for the City of Grants Pass, Oregon.
+
+    :param base: Group layer definition or map project target for layers.
+    :param template: Reference template for map layers.
+    :type template: JSON dictionary
+    :param internal: Portal connection for internal access layers.
+    :type internal: ArcGIS GIS connection.
+    :param basemap: Indicates whether appending to group layer or project map.
+    :type basemap: Boolean
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    url_list = u.transportation_editing
+    popup_names = t.layer_tags("transportation_editing", url_list, "_popup")
+    label_names = t.layer_tags("transportation_editing", url_list, "_label")
+
+    group_name = "Transportation Editing"
+    map_group = w.group_layer(group_name)
+    streets_group = w.group_layer("Streets")
+    for index, url in enumerate(url_list):
+        map_lyr = MapServiceLayer(url, internal)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], group_name)
+        streets_group["layers"].append(fc)
+    map_group["layers"].append(streets_group)
+    logging.info("Streets added to %s.", group_name)
+    logging.info("Appending layers to %s definition.", group_name)
+    w.add_group(base, map_group, basemap)
+
+
+def sewer_layers(base, template, internal, basemap=False, urls=u.sewer_urls):
     """
     Sewer utilities layers for City of Grants Pass.
 
     :param base: Group layer definition or map project target for layers.
     :param template: Reference template for map layers.
     :type template: JSON dictionary
+    :param internal: Portal connection for internal access layers.
+    :type internal: ArcGIS GIS connection.
     :param basemap: Indicates whether appending to group layer or project map.
     :type basemap: Boolean
+    :param urls: Url list for published service.
+    :type urls: List(String)
     :return: Updates group layer definition with layers.
     :rtype: None
     """
-    popup_names = t.layer_tags("sewer", u.sewer_urls, "_popup")
-    label_names = t.layer_tags("sewer", u.sewer_urls, "_label")
-    url_list = u.sewer_urls
+    url_list = urls
+    popup_names = t.layer_tags("sewer", url_list, "_popup")
+    label_names = t.layer_tags("sewer", url_list, "_label")
 
     group_name = "Wastewater"
     map_group = w.group_layer(group_name)
     for index, url in enumerate(url_list):
-        map_lyr = MapServiceLayer(url)
+        if urls != u.sewer_urls:
+            map_lyr = MapServiceLayer(url, internal)
+        else:
+            map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
         if popup_names[index] in template:
@@ -1425,26 +1469,32 @@ def sewer_layers(base, template, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
-def stormwater_layers(base, template, basemap=False):
+def stormwater_layers(base, template, internal, basemap=False, urls=u.stormwater_urls):
     """
     Stormwater utilities layers for City of Grants Pass.
 
     :param base: Group layer definition or map project target for layers.
     :param template: Reference template for map layers.
     :type template: JSON dictionary
+    :param internal: Portal connection for internal access layers.
+    :type internal: ArcGIS GIS connection.
     :param basemap: Indicates whether appending to group layer or project map.
     :type basemap: Boolean
+    :type urls: List(String)
     :return: Updates group layer definition with layers.
     :rtype: None
     """
-    popup_names = t.layer_tags("stormwater", u.stormwater_urls, "_popup")
-    label_names = t.layer_tags("stormwater", u.stormwater_urls, "_label")
-    url_list = u.stormwater_urls
+    url_list = urls
+    popup_names = t.layer_tags("stormwater", url_list, "_popup")
+    label_names = t.layer_tags("stormwater", url_list, "_label")
 
     group_name = "Stormwater"
     map_group = w.group_layer(group_name)
     for index, url in enumerate(url_list):
-        map_lyr = MapServiceLayer(url)
+        if urls != u.stormwater_urls:
+            map_lyr = MapServiceLayer(url, internal)
+        else:
+            map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
         if popup_names[index] in template:
@@ -1553,9 +1603,9 @@ def utility_layers(base, template, internal, public=False, basemap=False):
         "cell_towers", u.cell_towers_url, map_group, template, visibility=False
     )
     logging.info("Cell towers added to %s.", group_name)
-    sewer_layers(map_group, template)
+    sewer_layers(map_group, template, internal)
     logging.info("Sewer layers added to %s.", group_name)
-    stormwater_layers(map_group, template)
+    stormwater_layers(map_group, template, internal)
     logging.info("Stormwater layers added to %s.", group_name)
     water_layers(map_group, template)
     logging.info("Water utilities layers added to %s.", group_name)
@@ -1858,10 +1908,13 @@ def editing_map(project_map, template, internal, public=False):
     :return: Updates the web map, adding reference layers.
     :rtype: None.
     """
-    map_name = "City Web Viewer"
+    map_name = "City Web Editor"
     logging.info("Building %s.", map_name)
 
-    city_basemap(project_map, template, internal, public)
+    # city_basemap(project_map, template, internal, public)
+    sewer_layers(project_map, template, internal, True, u.sewer_editing)
+    stormwater_layers(project_map, template, internal, True, u.stormwater_editing)
+    transportation_editing(project_map, template, internal, True)
     address_editing_layers(project_map, template, internal, True)
 
     logging.info("Adding editing search.")

@@ -52,8 +52,8 @@ library_def = {
 
 # city boundaries
 
-# boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
-boundaries_base = "https://gisserver.grantspassoregon.gov/server/rest/services/city_boundaries/MapServer/"
+boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
+# boundaries_base = "https://gisserver.grantspassoregon.gov/server/rest/services/city_boundaries/MapServer/"
 # urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
 url_range = list(range(7, -1, -1))
 boundaries_urls = expand_urls(boundaries_base, url_range)
@@ -609,7 +609,7 @@ marijuana_adult_urls = expand_urls(marijuana_adult_base, url_range)
 
 # revision of marijuana permitting buffers 3/02/2023
 marijuana_permitting_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/marijuana_permitting/FeatureServer/"
-url_range = list(range(13, -1, -1))
+url_range = list(range(19, -1, -1))
 marijuana_permitting_urls = expand_urls(marijuana_permitting_base, url_range)
 
 # agreements and financial
@@ -637,6 +637,10 @@ transportation_urls.insert(0, odot_railroad_url)
 transportation_urls.insert(0, odot_construction_url)
 transportation_urls.insert(0, odot_traffic_url)
 
+# transportation editing
+street_adoption_editing = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/street_adoption/FeatureServer/0"
+transportation_editing = [street_adoption_editing]
+
 # utilities
 
 # water
@@ -657,6 +661,9 @@ stormwater_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/ser
 url_range = list(range(11, -1, -1))
 stormwater_urls = expand_urls(stormwater_base, url_range)
 
+stormwater_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/FeatureServer/"
+stormwater_editing = expand_urls(stormwater_editing_base, url_range)
+
 # sewer
 # sewer_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/sewer_areas/FeatureServer/"
 # url_range = list(range(3, -1, -1))
@@ -669,8 +676,10 @@ stormwater_urls = expand_urls(stormwater_base, url_range)
 # sewer_areas_urls.extend(sewer_urls)
 # sewer_urls = sewer_areas_urls
 sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sewer_utilities/MapServer/"
+sewer_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sewer_utilities/FeatureServer/"
 url_range = list(range(11, -1, -1))
 sewer_urls = expand_urls(sewer_base, url_range)
+sewer_editing = expand_urls(sewer_editing_base, url_range)
 
 # power and gas
 # protected by NDA, not for public distribution
