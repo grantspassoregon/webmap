@@ -89,6 +89,7 @@ def build_template(gis):
     hazards = gis.content.get(r.TEMPLATE_HAZARDS)
     historic_cultural = gis.content.get(r.TEMPLATE_HISTORIC_CULTURAL)
     hydric_soils = gis.content.get(r.TEMPLATE_HYDRIC_SOILS)
+    impervious = gis.content.get(r.TEMPLATE_IMPERVIOUS)
     land_use = gis.content.get(r.TEMPLATE_LAND_USE)
     landfill = gis.content.get(r.TEMPLATE_LANDFILL)
     marijuana_adult_use = gis.content.get(r.TEMPLATE_MARIJUANA_ADULT_USE)
@@ -114,6 +115,7 @@ def build_template(gis):
     transportation = gis.content.get(r.TEMPLATE_TRANSPORTATION)
     transportation_editing = gis.content.get(r.TEMPLATE_TRANSPORTATION_EDITING)
     water = gis.content.get(r.TEMPLATE_WATER)
+    water_editing = gis.content.get(r.TEMPLATE_WATER_EDITING)
     wells = gis.content.get(r.TEMPLATE_OWRD_WELLS)
     wetlands = gis.content.get(r.TEMPLATE_WETLANDS)
     zoning = gis.content.get(r.TEMPLATE_ZONING)
@@ -139,6 +141,7 @@ def build_template(gis):
     template.update(build_template_dictionary("hazards", hazards))
     template.update(build_template_dictionary("historic", historic_cultural))
     template.update(build_template_dictionary("hydric_soils", hydric_soils))
+    template.update(build_template_dictionary("impervious", impervious))
     template.update(build_template_dictionary("land_use", land_use))
     template.update(build_template_dictionary("landfill", landfill))
     template.update(
@@ -170,6 +173,7 @@ def build_template(gis):
         build_template_dictionary("transportation_editing", transportation_editing)
     )
     template.update(build_template_dictionary("water", water))
+    template.update(build_template_dictionary("water_editing", water_editing))
     template.update(get_definition("wells", wells))
     template.update(build_template_dictionary("wetlands", wetlands))
     template.update(build_template_dictionary("zoning", zoning))
@@ -242,6 +246,10 @@ def build_template_dictionary(template_type, template):
             )
         case "hydric_soils":
             template_dict.update(update_layers("hydric_soils", [""], template))
+        case "impervious":
+            template_dict.update(
+                get_layer_info(template, "impervious", u.impervious_urls)
+            )
         case "land_use":
             template_dict.update(get_layer_info(template, "land_use", u.land_use_urls))
         case "landfill":
@@ -318,6 +326,10 @@ def build_template_dictionary(template_type, template):
             )
         case "water":
             template_dict.update(update_layer("water", u.water_urls, template))
+        case "water_editing":
+            template_dict.update(
+                get_layer_info(template, "water_editing", u.water_urls)
+            )
         case "wells":
             template_dict.update(update_layer("wells", u.wells_urls, template))
         case "wetlands":

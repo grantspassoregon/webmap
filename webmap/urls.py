@@ -52,7 +52,9 @@ library_def = {
 
 # city boundaries
 
+# AGOL preferred
 boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/regulatory_boundaries/FeatureServer/"
+# internal portal alternative
 # boundaries_base = "https://gisserver.grantspassoregon.gov/server/rest/services/city_boundaries/MapServer/"
 # urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
 url_range = list(range(7, -1, -1))
@@ -69,7 +71,10 @@ school_locations = "https://gis.co.josephine.or.us/arcgis/rest/services/Planning
 school_zones = "https://gis.co.josephine.or.us/arcgis/rest/services/Boundary/School_Zones/MapServer/0"
 
 # city schools data
+# AGOL preferred
 school_districts_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/school_district/FeatureServer/"
+# internal portal alternative
+# school_districts_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/schools/MapServer/"
 url_range = list(range(5, -1, -1))
 school_districts_urls = expand_urls(school_districts_base, url_range)
 # elementary, middle and high school zones
@@ -84,18 +89,25 @@ county_addresses_url = "https://services6.arcgis.com/Hf6u9DI4oZH2QTg9/arcgis/res
 ecso911_addresses_url = "https://gis.ecso911.com/server/rest/services/Hosted/JoCo_SiteAddress/FeatureServer/0"
 
 # address editing
-address_editing_url = "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/FeatureServer/0"
+address_editing_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/land_use_editing/FeatureServer/0"
 address_verification_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/address_verification/FeatureServer/0"
 address_editing_urls = [address_editing_url, address_verification_url]
 
 # land use
+# AGOL preferred
 land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/land_use/FeatureServer/"
+# internal portal alternative
 # land_use_base = (
 #     "https://gisserver.grantspassoregon.gov/server/rest/services/land_use/MapServer/"
 # )
 url_range = [2, 1, 0]
 land_use_urls = expand_urls(land_use_base, url_range)
 land_use_urls.insert(2, ecso911_addresses_url)
+# editing_version
+land_use_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/land_use_editing/FeatureServer/"
+url_range = list(range(2, -1, -1))
+land_use_editing_urls = expand_urls(land_use_editing_base, url_range)
+land_use_editing_urls.insert(2, ecso911_addresses_url)
 
 
 # tax parcels
@@ -111,12 +123,20 @@ assessment_maps_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest
 tax_code_url = (
     "https://gis.co.josephine.or.us/arcgis/rest/services/Assessor/Codes_Map/MapServer/7"
 )
+# AGOL
 tax_parcel_urls = [
     tax_code_url,
     assessment_maps_url,
     county_parcels_url,
     city_parcels_url,
 ]
+# internal alternative
+# tax_parcel_urls = [
+#     tax_code_url,
+#     assessment_maps_url,
+#     city_parcels_url,
+#     city_parcels_url,
+# ]
 
 
 # hazards
@@ -584,7 +604,10 @@ nps_public_trails_url = "https://mapservices.nps.gov/arcgis/rest/services/Nation
 
 # historic and cultural areas
 
+# AGOL preferred
 historic_cultural_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/historic_cultural_areas/FeatureServer/"
+# internal portal alternative
+# historic_cultural_areas_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/historic_cultural_areas/MapServer/"
 url_range = list(range(3, -1, -1))
 historic_cultural_areas_urls = expand_urls(historic_cultural_areas_base, url_range)
 url_range = [3, 1, 0]
@@ -592,18 +615,26 @@ historic_cultural_tourism_urls = expand_urls(historic_cultural_areas_base, url_r
 # historic_cultural_areas_urls.insert(2, oprd_historic_sites_url)
 
 # zoning
+# AGOL preferred
 zoning_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/zoning_group/FeatureServer/"
+# internal portal backup
+# zoning_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/zoning/MapServer/"
 url_range = list(range(4, -1, -1))
 zoning_urls = expand_urls(zoning_base, url_range)
 
 # planning misc
-# planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
-planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
+# AGOL preferred
+planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
+# internal portal alternative
+# planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
 url_range = list(range(5, -1, -1))
 planning_urls = expand_urls(planning_group_base, url_range)
 
 # marijuana and adult use
+# AGOL preferred
 marijuana_adult_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/marijuana_adult_use/FeatureServer/"
+# internal portal alternative
+# marijuana_adult_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/marijuana_adult_use/MapServer/"
 url_range = list(range(13, -1, -1))
 marijuana_adult_urls = expand_urls(marijuana_adult_base, url_range)
 
@@ -623,8 +654,11 @@ agreements_urls = expand_urls(agreements_base, url_range)
 
 
 # transportation
-# transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/transportation1/FeatureServer/"
-transportation_base = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation/MapServer/"
+# AGOL service
+transportation_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/transportation/FeatureServer/"
+
+# internal portal service
+# transportation_base = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation/MapServer/"
 url_range = list(range(16, -1, -1))
 transportation_urls = expand_urls(transportation_base, url_range)
 # transportation_signs_url = "https://gisserver.grantspassoregon.gov/server/rest/services/transportation_signs/MapServer/0"
@@ -638,6 +672,15 @@ transportation_urls.insert(0, odot_construction_url)
 transportation_urls.insert(0, odot_traffic_url)
 
 # transportation editing
+transportation_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/transportation_editing/FeatureServer/"
+transportation_editing_urls = expand_urls(transportation_editing_base, url_range)
+transportation_editing_urls.insert(4, county_roads_url)
+transportation_editing_urls.insert(4, odot_roads_url)
+transportation_editing_urls.insert(6, transportation_editing_urls[6])
+transportation_editing_urls.insert(6, transportation_editing_urls[6])
+transportation_editing_urls.insert(0, odot_railroad_url)
+transportation_editing_urls.insert(0, odot_construction_url)
+transportation_editing_urls.insert(0, odot_traffic_url)
 street_adoption_editing = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/street_adoption/FeatureServer/0"
 transportation_editing = [street_adoption_editing]
 
@@ -645,24 +688,45 @@ transportation_editing = [street_adoption_editing]
 
 # water
 
-water_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/water_utilities/MapServer/"
+# AGOL service
+water_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/water_utilities/FeatureServer/"
+
+# internal portal service
+# water_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/water_utilities/MapServer/"
+# editing version
+water_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/water_editing/FeatureServer/"
 url_range = list(range(11, -1, -1))
 water_urls = expand_urls(water_base, url_range)
+water_editing_urls = expand_urls(water_editing_base, list(range(10, -1, -1)))
 # copy water mains layer twice (for ownership and pipe size symbology)
 water_urls.insert(5, water_urls[5])
 water_urls.insert(5, water_urls[5])
+water_editing_urls.insert(4, water_editing_urls[4])
+water_editing_urls.insert(4, water_editing_urls[4])
 # copy water pressure zones for billing zones
 water_urls.insert(2, water_urls[2])
+water_editing_urls.insert(1, water_editing_urls[1])
+
 
 # stormwater
 
-# stormwater_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/MapServer/"
+# AGOL preferred
 stormwater_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/stormwater/FeatureServer/"
+# internal portal alternative
+# stormwater_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/MapServer/"
 url_range = list(range(11, -1, -1))
 stormwater_urls = expand_urls(stormwater_base, url_range)
 
-stormwater_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/stormwater/FeatureServer/"
+stormwater_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/stormwater_editing/FeatureServer/"
 stormwater_editing = expand_urls(stormwater_editing_base, url_range)
+
+# impervious surface
+# AGOL service
+impervious_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/impervious_surface/FeatureServer/"
+# internal portal
+# impervious_base = 'https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/impervious_surface/MapServer/'
+url_range = [1, 0]
+impervious_urls = expand_urls(impervious_base, url_range)
 
 # sewer
 # sewer_areas_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/sewer_areas/FeatureServer/"
@@ -675,8 +739,11 @@ stormwater_editing = expand_urls(stormwater_editing_base, url_range)
 #
 # sewer_areas_urls.extend(sewer_urls)
 # sewer_urls = sewer_areas_urls
-sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sewer_utilities/MapServer/"
-sewer_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sewer_utilities/FeatureServer/"
+# AGOL service
+sewer_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/sewer_utilities/FeatureServer/"
+# internal portal service
+# sewer_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sewer_utilities/MapServer/"
+sewer_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/sewer_editing/FeatureServer/"
 url_range = list(range(11, -1, -1))
 sewer_urls = expand_urls(sewer_base, url_range)
 sewer_editing = expand_urls(sewer_editing_base, url_range)
@@ -689,11 +756,17 @@ url_range = list(range(3, -1, -1))
 power_gas_urls = expand_urls(power_gas_base, url_range)
 
 # cell towers
+# AGOL preferred
 cell_towers_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/cell_towers/FeatureServer/0"
+# internal portal alternative
+# cell_towers_url = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/cell_towers/MapServer/0"
 
 
 # merlin landfill
+# AGOL preferred
 landfill_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/merlin_landfill/FeatureServer/"
+# internal portal alternative
+# landfill_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/merlin_landfill/MapServer/"
 url_range = list(range(6, -1, -1))
 landfill_urls = expand_urls(landfill_base, url_range)
 
@@ -705,12 +778,20 @@ url_range = [1, 0]
 as_builts_urls = expand_urls(as_builts_base, url_range)
 
 # parking
+# AGOL preferred
 parking_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/parking/FeatureServer/"
+# internal portal alternative
+# parking_base = (
+#     "https://gisserver.grantspassoregon.gov/server/rest/services/parking/MapServer/"
+# )
 url_range = [1, 0]
 parking_urls = expand_urls(parking_base, url_range)
 
 # parks
+# AGOL preferred
 parks_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/parks/FeatureServer/"
+# internal portal alternative
+# parks_base = "https://gisserver.grantspassoregon.gov/server/rest/services/public_parks/MapServer/"
 url_range = [1, 0]
 parks_urls = expand_urls(parks_base, url_range)
 

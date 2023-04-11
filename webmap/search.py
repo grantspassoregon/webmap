@@ -256,9 +256,69 @@ def add_search(project_map, search_list=search_list):
 
 editor_list = [
     search_item(u.address_editing_urls[1], "address_label"),
-    search_item(u.address_editing_urls[0], "StreetAddressLabel"),
+    search_item(u.address_editing_urls[0], "FULLADDRESS"),
     search_item(u.address_editing_urls[0], "CompleteStreetAddress"),
+    search_item(u.land_use_editing_urls[3], "FULLADDRESS"),
+    search_item(u.land_use_editing_urls[3], "CompleteStreetAddress"),
+    search_item(u.land_use_editing_urls[1], "NAME"),
+    search_item(u.land_use_editing_urls[0], "FACILITYID"),
+    search_item(u.land_use_editing_urls[0], "MAPNUMX"),
+    search_item(u.transportation_editing[0], "ADOPTED_BY"),  # street adoption
+    search_item(u.water_editing_urls[13], "ACCOUNTID"),  # Water Meters
+    search_item(u.water_editing_urls[13], "AssociatedAddress"),
+    search_item(u.water_editing_urls[13], "AssocMapNum"),
+    search_item(u.water_editing_urls[13], "FACILITYID"),
+    search_item(u.water_editing_urls[12], "FACILITYID"),  # water fittings
+    search_item(u.water_editing_urls[11], "FACILITYID"),  # water valves
+    search_item(u.water_editing_urls[10], "FACILITYID"),  # water hydrants
+    search_item(u.water_editing_urls[9], "FACILITYID"),  # water sampling stations
+    search_item(u.water_editing_urls[9], "ADDRESS"),
+    search_item(u.water_editing_urls[8], "FACILITYID"),  # water service laterals
+    search_item(u.water_editing_urls[7], "FACILITYID"),  # water mains
+    search_item(u.water_editing_urls[4], "AssetID"),  # water network structures
+    search_item(u.water_editing_urls[3], "PERMITNUMB"),  # water network structures
+    search_item(u.water_editing_urls[2], "AssetID"),  # water pressure zones
+    search_item(u.water_editing_urls[0], "FZ"),  # water flush zones
+    search_item(u.stormwater_editing[11], "FACILITYID"),  # stormwater manholes
+    search_item(u.stormwater_editing[11], "HistoricID"),
+    search_item(u.stormwater_editing[10], "FACILITYID"),  # stormwater inlets
+    search_item(u.stormwater_editing[10], "HistoricID"),
+    search_item(u.stormwater_editing[9], "FACILITYID"),  # stormwater cleanouts
+    search_item(u.stormwater_editing[9], "HistoricID"),
+    search_item(u.stormwater_editing[8], "FACILITYID"),  # stormwater valves
+    search_item(u.stormwater_editing[8], "HistoricID"),
+    search_item(u.stormwater_editing[7], "FACILITYID"),  # stormwater outfalls
+    search_item(u.stormwater_editing[7], "HistoricID"),
+    search_item(u.stormwater_editing[6], "FACILITYID"),  # stormwater fittings
+    search_item(u.stormwater_editing[5], "FACILITYID"),  # stormwater culverts
+    search_item(u.stormwater_editing[4], "FACILITYID"),  # stormwater open drains
+    search_item(u.stormwater_editing[3], "FACILITYID"),  # stormwater gravity mains
+    search_item(u.stormwater_editing[3], "HistoricID"),
+    search_item(u.stormwater_editing[2], "FACILITYID"),  # stormwater detention
+    search_item(u.stormwater_editing[2], "HistoricID"),
+    search_item(u.stormwater_editing[1], "SUB_BASIN_ID"),  # stormwater sub-basins
+    search_item(u.stormwater_editing[1], "SW_BASIN"),
+    search_item(u.stormwater_editing[0], "BASIN_ID"),  # stormwater basins
+    search_item(u.sewer_editing[11], "AssetID"),  # sewer manholes
+    search_item(u.sewer_editing[11], "HistoricID"),
+    search_item(u.sewer_editing[10], "FACILITYID"),  # sewer fittings
+    search_item(u.sewer_editing[9], "AssetID"),  # sewer valves
+    search_item(u.sewer_editing[9], "HistoricID"),
+    search_item(u.sewer_editing[8], "AssetID"),  # sewer clean outs
+    search_item(u.sewer_editing[8], "HistoricID"),
+    search_item(u.sewer_editing[7], "FACILITYID"),  # sewer discharge points
+    search_item(u.sewer_editing[7], "HistoricID"),
+    search_item(u.sewer_editing[6], "AssetID"),  # sewer gravity mains
+    search_item(u.sewer_editing[6], "FACILITYID"),
+    search_item(u.sewer_editing[5], "FACILITYID"),  # sewer lateral lines
+    search_item(u.sewer_editing[5], "HistoricID"),
+    search_item(u.sewer_editing[4], "AssetID"),  # sewer pressurized mains
+    search_item(u.sewer_editing[4], "FACILITYID"),
+    search_item(u.sewer_editing[1], "AssetID"),  # sewer network structures
+    search_item(u.sewer_editing[1], "FACILITYID"),
+    search_item(u.sewer_editing[0], "AssetID"),  # sewer basins
+    search_item(u.sewer_editing[0], "REF_AREA"),
 ]
 
-search_edit_list = search_list
-search_edit_list.extend(editor_list)
+search_edit_list = editor_list
+search_edit_list.extend(search_list)
