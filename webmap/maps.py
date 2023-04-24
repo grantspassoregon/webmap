@@ -1901,6 +1901,47 @@ def tourism_layers(base, template, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
+def business_layers(base, template, internal, basemap=False, urls=u.businesses_urls):
+    """
+    Business layers for the City of Grants Pass, Oregon.
+
+    :param base: Group layer definition or map project target for layers.
+    :param template: Reference template for map layers.
+    :type template: JSON dictionary
+    :param internal: Portal connection for internal access layers.
+    :type internal: ArcGIS GIS connection.
+    :param basemap: Indicates whether appending to group layer or project map.
+    :type basemap: Boolean
+    :param urls: Url list for published service.
+    :type urls: List(String)
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    popup_names = t.layer_tags("businesses", urls, "_popup")
+    label_names = t.layer_tags("businesses", urls, "_label")
+
+    group_name = "Economic Development"
+    map_group = w.group_layer(group_name)
+    edit = False
+    if urls != u.businesses_url:
+        edit = True
+    for index, url in enumerate(urls):
+        if edit:
+            map_lyr = MapServiceLayer(url, internal)
+        else:
+            map_lyr = MapServiceLayer(url)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], group_name)
+        map_group["layers"].append(fc)
+    logging.info("Appending layers to %s definition.", group_name)
+    w.add_group(base, map_group, basemap)
+
+
 def sketch_layers(base, template, internal, public=False, basemap=False):
     """
     Staff markup layers for the City of Grants Pass, Oregon.
@@ -2029,6 +2070,10 @@ def city_basemap(project_map, template, internal, public=False):
     logging.info("Utility layers added to %s.", map_name)
     transportation_layers(project_map, template, internal, True)
     logging.info("Transportation layers added to %s.", map_name)
+    if not public:
+        business_layers(project_map, template, internal, True)
+        logging.info("Economic Development layers added to %s.", map_name)
+
     planning_layers(project_map, template, True)
     logging.info("Planning layers added to %s.", map_name)
     boundary_layers(project_map, template, True)

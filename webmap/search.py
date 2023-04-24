@@ -57,9 +57,8 @@ search_list = [
     search_item(u.aiannha_urls[1], "AIANNH"),
     search_item(u.aiannha_urls[0], "NAME"),
     search_item(u.aiannha_urls[0], "AIANNH"),
-    search_item(u.boundaries_urls[6], "NAME"),
-    search_item(u.boundaries_urls[2], "AcctNum"),
-    search_item(u.boundaries_urls[2], "MAPNUM"),
+    search_item(u.boundaries_urls[1], "AcctNum"),  # GPID
+    search_item(u.boundaries_urls[1], "MAPNUM"),
     search_item(u.school_locations, "Institution_Name_Line1"),
     search_item(u.school_locations, "Site_Address_Line1"),
     search_item(u.school_districts_urls[8], "ADDRESS"),
@@ -199,6 +198,9 @@ search_list = [
     search_item(u.parks_urls[2], "NAME"),  # parks (city)
     search_item(u.parks_urls[1], "FACILITYID"),  # landscape (city maintained)
     search_item(u.parks_urls[0], "NAME"),  # parks (county)
+    search_item(u.businesses_urls[0], "company_name"),  # businesses
+    search_item(u.businesses_urls[0], "dba"),
+    search_item(u.businesses_urls[0], "StreetAddressLabel"),
 ]
 
 

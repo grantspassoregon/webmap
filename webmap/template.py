@@ -75,6 +75,7 @@ def build_template(gis):
     as_builts = gis.content.get(r.TEMPLATE_AS_BUILTS)
     aiannha = gis.content.get(r.TEMPLATE_AIANNHA)
     bia = gis.content.get(r.TEMPLATE_BIA)
+    businesses = gis.content.get(r.TEMPLATE_BUSINESS)
     cell_towers = gis.content.get(r.TEMPLATE_CELL_TOWERS)
     city_boundaries = gis.content.get(r.TEMPLATE_CITY_BOUNDARIES)
     deq_dw_source = gis.content.get(r.TEMPLATE_DEQ_DW_SOURCE)
@@ -127,6 +128,7 @@ def build_template(gis):
     template.update(build_template_dictionary("as_builts", as_builts))
     template.update(build_template_dictionary("aiannha", aiannha))
     template.update(build_template_dictionary("bia", bia))
+    template.update(build_template_dictionary("businesses", businesses))
     template.update(build_template_dictionary("cell_towers", cell_towers))
     template.update(build_template_dictionary("city_boundaries", city_boundaries))
     template.update(build_template_dictionary("deq_dw_source", deq_dw_source))
@@ -202,6 +204,10 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layer("aiannha", u.aiannha_urls, template))
         case "bia":
             template_dict.update(update_layers("bia", bia_names, template))
+        case "businesses":
+            template_dict.update(
+                get_layer_info(template, "businesses", u.businesses_urls)
+            )
         case "cell_towers":
             template_dict.update(update_layers("cell_towers", [""], template))
         case "city_boundaries":

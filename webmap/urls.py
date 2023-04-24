@@ -89,9 +89,12 @@ county_addresses_url = "https://services6.arcgis.com/Hf6u9DI4oZH2QTg9/arcgis/res
 ecso911_addresses_url = "https://gis.ecso911.com/server/rest/services/Hosted/JoCo_SiteAddress/FeatureServer/0"
 
 # address editing
-address_editing_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/land_use_editing/FeatureServer/0"
+# address_editing_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/land_use_editing/FeatureServer/0"
 address_verification_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/address_verification/FeatureServer/0"
-address_editing_urls = [address_editing_url, address_verification_url]
+# address_editing_urls = [address_editing_url, address_verification_url]
+
+address_duplicates_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/address_duplicates/FeatureServer/0"
+address_editing_urls = [address_duplicates_url, address_verification_url]
 
 # land use
 # AGOL preferred
@@ -624,9 +627,9 @@ zoning_urls = expand_urls(zoning_base, url_range)
 
 # planning misc
 # AGOL preferred
-planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
+# planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
 # internal portal alternative
-# planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
+planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
 url_range = list(range(5, -1, -1))
 planning_urls = expand_urls(planning_group_base, url_range)
 
@@ -818,3 +821,7 @@ sketch_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editi
 # sketch_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicWorks/sketch_editing/FeatureServer/"
 url_range = [2, 1, 0]
 sketch_urls = expand_urls(sketch_base, url_range)
+
+# economic development
+businesses_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/businesses/FeatureServer/0"
+businesses_urls = [businesses_url]
