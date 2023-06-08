@@ -1996,8 +1996,8 @@ def address_editing_layers(base, template, internal, basemap=False):
     :rtype: None
     """
 
-    popup_names = t.layer_tags("address_editing", u.address_editing_urls, "_popup")
-    label_names = t.layer_tags("address_editing", u.address_editing_urls, "_label")
+    popup_names = t.layer_tags("address_verification", u.address_editing_urls, "_popup")
+    label_names = t.layer_tags("address_verification", u.address_editing_urls, "_label")
     url_list = u.address_editing_urls
 
     group_name = "Address Editing"

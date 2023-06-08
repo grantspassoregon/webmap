@@ -71,6 +71,7 @@ def build_template(gis):
     """
     logging.info("Loading template layers from %s.", gis)
     address_editing = gis.content.get(r.TEMPLATE_ADDRESS_EDITING)
+    address_verification = gis.content.get(r.TEMPLATE_ADDRESS_VERIFICATION)
     agreements = gis.content.get(r.TEMPLATE_AGREEMENTS)
     as_builts = gis.content.get(r.TEMPLATE_AS_BUILTS)
     aiannha = gis.content.get(r.TEMPLATE_AIANNHA)
@@ -124,6 +125,9 @@ def build_template(gis):
     logging.info("Building template dictionary.")
     template = {}
     template.update(build_template_dictionary("address_editing", address_editing))
+    template.update(
+        build_template_dictionary("address_verification", address_verification)
+    )
     template.update(build_template_dictionary("agreements", agreements))
     template.update(build_template_dictionary("as_builts", as_builts))
     template.update(build_template_dictionary("aiannha", aiannha))
@@ -193,6 +197,10 @@ def build_template_dictionary(template_type, template):
         case "address_editing":
             template_dict.update(
                 get_layer_info(template, "address_editing", u.address_editing_urls)
+            )
+        case "address_verification":
+            template_dict.update(
+                get_layer_info(template, "address_verification", u.address_editing_urls)
             )
         case "agreements":
             template_dict.update(

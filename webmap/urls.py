@@ -72,7 +72,7 @@ school_zones = "https://gis.co.josephine.or.us/arcgis/rest/services/Boundary/Sch
 
 # city schools data
 # AGOL preferred
-school_districts_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/school_district/FeatureServer/"
+school_districts_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/schools/FeatureServer/"
 # internal portal alternative
 # school_districts_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/schools/MapServer/"
 url_range = list(range(5, -1, -1))
@@ -93,8 +93,15 @@ ecso911_addresses_url = "https://gis.ecso911.com/server/rest/services/Hosted/JoC
 address_verification_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/address_verification/FeatureServer/0"
 # address_editing_urls = [address_editing_url, address_verification_url]
 
+# business address verification
+business_verification_url = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/business_verification/FeatureServer/0"
+
 address_duplicates_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/address_duplicates/FeatureServer/0"
-address_editing_urls = [address_duplicates_url, address_verification_url]
+address_editing_urls = [
+    business_verification_url,
+    address_duplicates_url,
+    address_verification_url,
+]
 
 # land use
 # AGOL preferred
@@ -619,7 +626,7 @@ historic_cultural_tourism_urls = expand_urls(historic_cultural_areas_base, url_r
 
 # zoning
 # AGOL preferred
-zoning_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/zoning_group/FeatureServer/"
+zoning_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/zoning/FeatureServer/"
 # internal portal backup
 # zoning_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/zoning/MapServer/"
 url_range = list(range(4, -1, -1))
@@ -627,9 +634,9 @@ zoning_urls = expand_urls(zoning_base, url_range)
 
 # planning misc
 # AGOL preferred
-# planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning_group/FeatureServer/"
+planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/planning/FeatureServer/"
 # internal portal alternative
-planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
+# planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
 url_range = list(range(5, -1, -1))
 planning_urls = expand_urls(planning_group_base, url_range)
 
