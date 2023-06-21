@@ -831,4 +831,5 @@ sketch_urls = expand_urls(sketch_base, url_range)
 
 # economic development
 businesses_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/businesses/FeatureServer/0"
-businesses_urls = [businesses_url]
+business_districts_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest/services/businesses/FeatureServer/1"
+businesses_urls = [business_districts_url, businesses_url]
