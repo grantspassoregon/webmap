@@ -2,6 +2,13 @@ from webmap import webmap as w
 from webmap import urls as u
 from webmap import template as t
 from webmap import search as s
+from webmap.groups import boundaries as b
+from webmap.groups import planning as pl
+from webmap.groups import property as p
+from webmap.groups import transportation as tr
+from webmap.groups import utilities as ut
+from webmap.groups import environment as e
+import webmap.groups
 from arcgis.mapping import MapServiceLayer
 import logging
 
@@ -248,9 +255,11 @@ def boundary_layers(base, template, basemap=False):
         if fc["title"] == "City Limits 2023":
             fc.update({"title": "City Limits"})
             fc.update({"visibility": True})
+            fc.update({"opacity": 0.9})
         if fc["title"] == "UGB 2014":
             fc.update({"title": "Urban Growth Boundary"})
             fc.update({"visibility": True})
+            fc.update({"opacity": 0.75})
         if fc["title"] == "Urban Reserve 2014":
             fc.update({"title": "Urban Reserve"})
         if fc["title"] == "GP_NSWE_Town_Sections":
@@ -321,7 +330,7 @@ def school_layers(base, template, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
-def aerial_imagery(base, template, basemap=False):
+def aerial_imagery(base, basemap=False):
     """
     Append aerial imagery layers to group layer.
 
@@ -347,6 +356,7 @@ def aerial_imagery(base, template, basemap=False):
     map_group["layers"].append(u.aerials_2019_ndvi_def)
     map_group["layers"].append(u.aerials_2019_def)
     map_group["layers"].append(u.esri_image_def)
+    map_group["layers"].append(u.aerials_2023_def)
     logging.info("Appending layers to %s definition.", group_name)
     w.add_group(base, map_group, basemap)
 
@@ -374,8 +384,10 @@ def tax_layers(base, template, basemap=False):
         fc.update({"visibility": False})
         if fc["title"] == "Tax Parcels":
             fc.update({"title": "Taxlots (City)"})
-        if fc["title"] == "Assessors Taxlots":
+            fc.update({"opacity": 0.75})
+        if fc["title"] == "Assessor Taxlots":
             fc.update({"title": "Taxlots (County)"})
+            fc.update({"opacity": 0.75})
         if fc["title"] == "Tax Codes":
             fc.update({"opacity": 0.2})
         if popup_names[index] in template:
@@ -613,7 +625,7 @@ def zoning_layers(base, template, basemap=False):
     label_names = t.layer_tags("zoning", u.zoning_urls, "_label")
     url_list = u.zoning_urls
 
-    group_name = "Zoning"
+    group_name = "Zoning Group"
     map_group = w.group_layer(group_name)
     for index, url in enumerate(url_list):
         map_lyr = MapServiceLayer(url)
@@ -815,7 +827,7 @@ def planning_layers(base, template, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
-def nhd_layers(base, template, basemap=False):
+def nhd_layers(base, template, basemap=False, urls=u.nhd_urls):
     """
     NHD watershed, rivers, streams and water bodies.
 
@@ -823,16 +835,17 @@ def nhd_layers(base, template, basemap=False):
     :param template: Reference template for map layers.
     :param basemap: Indicates whether appending to group layer or project map.
     :type basemap: Boolean
+    :param urls: Url list for published service.
+    :type urls: List(String)
     :return: Updates group layer definition with layers.
     :rtype: None
     """
-    popup_names = t.layer_tags("nhd", u.nhd_urls, "_popup")
-    label_names = t.layer_tags("nhd", u.nhd_urls, "_label")
-    url_list = u.nhd_urls
+    popup_names = t.layer_tags("nhd", urls, "_popup")
+    label_names = t.layer_tags("nhd", urls, "_label")
 
     group_name = "Hydrography (NHD)"
     map_group = w.group_layer(group_name)
-    for index, url in enumerate(url_list):
+    for index, url in enumerate(urls):
         map_lyr = MapServiceLayer(url)
         fc = w.feature_class(map_lyr, 0.5)
         fc.update({"visibility": False})
@@ -1090,7 +1103,7 @@ def hazards_layers(base, template, basemap=False):
     map_group = w.group_layer(group_name)
     wildfire_layers(map_group)
     logging.info("Wildfire potential (FS) layers added to %s.", group_name)
-    deq_hydro_layers(map_group, template)
+    # deq_hydro_layers(map_group, template)
     logging.info("Impaired surface waters (DEQ) added to %s.", group_name)
     deq_pcs_layers(map_group, template)
     logging.info("Potential contamination sources (DEQ) added to %s.", group_name)
@@ -1693,7 +1706,7 @@ def utility_layers(base, template, internal, public=False, basemap=False):
     w.add_group(base, map_group, basemap)
 
 
-def safety_layers(base, template, basemap=False):
+def safety_layers(base, template, internal, public=False, basemap=False):
     """
     Public safety layers from Josephine County ECSO 911 service.
 
@@ -1706,7 +1719,7 @@ def safety_layers(base, template, basemap=False):
     :rtype: None
     """
 
-    group_name = "Public Safety (County ECSO 911)"
+    group_name = "Public Safety"
     map_group = w.group_layer(group_name)
 
     w.add_single_layer(
@@ -1714,7 +1727,7 @@ def safety_layers(base, template, basemap=False):
         u.ecso911_law_url,
         map_group,
         template,
-        title="Law Enforcement Zones",
+        title="Law Enforcement Zones (ECSO 911)",
         visibility=False,
     )
     w.add_single_layer(
@@ -1722,7 +1735,7 @@ def safety_layers(base, template, basemap=False):
         u.ecso911_fire_url,
         map_group,
         template,
-        title="Fire Response Zones",
+        title="Fire Response Zones (ECSO 911)",
         visibility=False,
     )
     w.add_single_layer(
@@ -1730,9 +1743,12 @@ def safety_layers(base, template, basemap=False):
         u.ecso911_ems_url,
         map_group,
         template,
-        title="EMS Response Zones",
+        title="EMS Response Zones (ECSO 911)",
         visibility=False,
     )
+
+    if not public:
+        fire_layers(map_group, template, internal, False)
 
     logging.info("Appending layers to %s definition.", group_name)
     w.add_group(base, map_group, basemap)
@@ -1941,6 +1957,41 @@ def business_layers(base, template, basemap=False, urls=u.businesses_urls):
     w.add_group(base, map_group, basemap)
 
 
+def fire_layers(base, template, internal, basemap=False, urls=u.fire_service_urls):
+    """
+    Fire service layers for the City of Grants Pass, Oregon.
+
+    :param base: Group layer definition or map project target for layers.
+    :param template: Reference template for map layers.
+    :type template: JSON dictionary
+    :param internal: Portal connection for internal access layers.
+    :type internal: ArcGIS GIS connection.
+    :param basemap: Indicates whether appending to group layer or project map.
+    :type basemap: Boolean
+    :param urls: Url list for published service.
+    :type urls: List(String)
+    :return: Updates group layer definition with layers.
+    :rtype: None
+    """
+    popup_names = t.layer_tags("fire", urls, "_popup")
+    label_names = t.layer_tags("fire", urls, "_label")
+
+    group_name = "Fire"
+    map_group = w.group_layer(group_name)
+    for index, url in enumerate(urls):
+        map_lyr = MapServiceLayer(url, internal)
+        fc = w.feature_class(map_lyr, 0.5)
+        fc.update({"visibility": False})
+        if popup_names[index] in template:
+            fc.update({"popupInfo": template[popup_names[index]]})
+        if label_names[index] in template:
+            fc.update({"layerDefinition": template[label_names[index]]})
+        logging.debug("Appending %s to %s layer.", fc["title"], group_name)
+        map_group["layers"].append(fc)
+    logging.info("Appending layers to %s definition.", group_name)
+    w.add_group(base, map_group, basemap)
+
+
 def sketch_layers(base, template, internal, public=False, basemap=False):
     """
     Staff markup layers for the City of Grants Pass, Oregon.
@@ -2028,7 +2079,7 @@ def editing_map(project_map, template, internal, public=False):
     logging.info("Building %s.", map_name)
 
     # city_basemap(project_map, template, internal, public)
-    aerial_imagery(project_map, template, True)
+    aerial_imagery(project_map, True)
     sketch_layers(project_map, template, internal, public, True)
     sewer_layers(project_map, template, internal, True, u.sewer_editing)
     stormwater_layers(project_map, template, internal, True, u.stormwater_editing)
@@ -2054,33 +2105,77 @@ def city_basemap(project_map, template, internal, public=False):
     map_name = "City Web Viewer"
     logging.info("Building %s.", map_name)
 
-    aerial_imagery(project_map, template, True)
+    # aerial_imagery(project_map, True)
+    # logging.info("Aerial imagery added to %s.", map_name)
+    # street_imagery_layers(project_map, template, True)
+    # logging.info("Street imagery added to %s.", map_name)
+    # sketch_layers(project_map, template, internal, public, True)
+    # landfill_layers(project_map, template, True)
+    # logging.info("Merlin landfill added to %s.", map_name)
+    # safety_layers(project_map, template, internal, public, True)
+    # logging.info("Public safety layers added to %s.", map_name)
+    # environment_layers(project_map, template, True)
+    # logging.info("Environment layers added to %s.", map_name)
+    # utility_layers(project_map, template, internal, public, True)
+    # logging.info("Utility layers added to %s.", map_name)
+    transportation_layers(project_map, template, internal, True)
+    logging.info("Transportation layers added to %s.", map_name)
+    # if not public:
+    #     business_layers(project_map, template, True)
+    #     logging.info("Economic Development layers added to %s.", map_name)
+
+    # agreements_layers(project_map, template, True)
+    # planning_layers(project_map, template, True)
+    # logging.info("Planning layers added to %s.", map_name)
+    # land_use_layers(project_map, template, internal, True)
+    # logging.info("Land use layers added to %s.", map_name)
+    # boundary_layers(project_map, template, True)
+    # logging.info("Regulatory boundaries added to %s.", map_name)
+    # tourism_layers(project_map, template, True)
+    # logging.info("Tourism group added to %s.", map_name)
+
+    logging.info("Adding search.")
+    s.add_search(project_map)
+
+
+def web_viewer(project_map, template, internal, public=False):
+    """
+    Add common reference layers to web map.
+
+    :param project_map: Web map to update with reference layers.
+    :return: Updates the web map, adding reference layers.
+    :rtype: None.
+    """
+    map_name = "City of Grants Pass Web Viewer"
+    logging.info("Building %s.", map_name)
+
+    aerial_imagery(project_map, True)
     logging.info("Aerial imagery added to %s.", map_name)
     street_imagery_layers(project_map, template, True)
     logging.info("Street imagery added to %s.", map_name)
     sketch_layers(project_map, template, internal, public, True)
     landfill_layers(project_map, template, True)
     logging.info("Merlin landfill added to %s.", map_name)
-    safety_layers(project_map, template, True)
+    safety_layers(project_map, template, internal, public, True)
     logging.info("Public safety layers added to %s.", map_name)
-    environment_layers(project_map, template, True)
+    e.environment(project_map, template, True)
     logging.info("Environment layers added to %s.", map_name)
-    utility_layers(project_map, template, internal, public, True)
+    parks_layers(project_map, template, True)
+    logging.info("Parks layers added to %s.", map_name)
+    ut.utilities(project_map, template, internal, public, True)
     logging.info("Utility layers added to %s.", map_name)
-    transportation_layers(project_map, template, internal, True)
+    tr.transportation_layers(project_map, template, internal, True)
     logging.info("Transportation layers added to %s.", map_name)
     if not public:
         business_layers(project_map, template, True)
         logging.info("Economic Development layers added to %s.", map_name)
 
-    planning_layers(project_map, template, True)
+    pl.planning(project_map, template, False, True)
     logging.info("Planning layers added to %s.", map_name)
-    boundary_layers(project_map, template, True)
-    logging.info("Regulatory boundaries added to %s.", map_name)
-    land_use_layers(project_map, template, internal, True)
-    logging.info("Land use layers added to %s.", map_name)
-    tourism_layers(project_map, template, True)
-    logging.info("Tourism group added to %s.", map_name)
+    p.property(project_map, template, internal, True)
+    logging.info("Property layers added to %s.", map_name)
+    b.boundaries(project_map, template, True)
+    logging.info("Boundaries added to %s.", map_name)
 
     logging.info("Adding search.")
     s.add_search(project_map)

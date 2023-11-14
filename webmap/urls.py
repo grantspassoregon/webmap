@@ -59,6 +59,8 @@ boundaries_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/ser
 # urban_reserve_url = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/urban_reserve/FeatureServer/0"
 url_range = list(range(7, -1, -1))
 boundaries_urls = expand_urls(boundaries_base, url_range)
+url_range = [7, 6, 3, 2, 1, 0]
+boundaries_group = expand_urls(boundaries_base, url_range)
 # boundaries_urls[4] = urban_reserve_url
 # boundaries_urls.insert(1, library_url)
 
@@ -82,6 +84,13 @@ school_districts_urls.insert(2, school_zones)
 school_districts_urls.insert(2, school_zones)
 school_districts_urls.insert(2, school_zones)
 school_districts_urls.append(school_locations)
+
+url_range = [5, 4, 0]
+school_districts_group = expand_urls(school_districts_base, url_range)
+school_districts_group.insert(2, school_zones)
+school_districts_group.insert(2, school_zones)
+school_districts_group.insert(2, school_zones)
+school_districts_group.append(school_locations)
 
 
 # addresses
@@ -112,6 +121,7 @@ land_use_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/servi
 # )
 url_range = [2, 1, 0]
 land_use_urls = expand_urls(land_use_base, url_range)
+property_urls = expand_urls(land_use_base, url_range)
 land_use_urls.insert(2, ecso911_addresses_url)
 # editing_version
 land_use_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/land_use_editing/FeatureServer/"
@@ -147,6 +157,8 @@ tax_parcel_urls = [
 #     city_parcels_url,
 #     city_parcels_url,
 # ]
+
+property_urls.insert(0, city_parcels_url)
 
 
 # hazards
@@ -196,6 +208,8 @@ fema_nfhlwms_stub = (
 )
 # fema_nfhlwms_rng = range(1, 33)
 fema_nfhl_wms_urls = expand_urls(fema_nfhlwms_stub, url_range)
+url_range = [28, 16, 34, 1, 3]
+fema_flood_wv = expand_urls(fema_flood_base, url_range)
 
 # forest service
 # wildfire housing list
@@ -293,8 +307,8 @@ wells_def = {
 
 # deq
 # drinking water sources
-deq_drinking_water_source_base = "https://arcgis.deq.state.or.us/arcgis/rest/services/DEQ_Services/DrinkingWaterTestService/MapServer/"
-url_range = [7, 6, 4, 3, 2]
+deq_drinking_water_source_base = "https://arcgis.deq.state.or.us/arcgis/rest/services/DEQ_Services/DrinkingWaterSourceAreas/MapServer/"
+url_range = [7, 6, 4, 3, 2, 1]
 deq_drinking_water_source_urls = expand_urls(deq_drinking_water_source_base, url_range)
 
 
@@ -411,19 +425,16 @@ county_bridges_url = (
 )
 
 # ecso911 data
-county_roads_url = (
-    "https://gis.ecso911.com/server/rest/services/Hosted/Centerline/FeatureServer/0"
-)
+county_roads_url = "https://gis.ecso911.com/server/rest/services/Hosted/Centerline_View/FeatureServer/0"
 
-ecso911_ems_url = (
-    "https://gis.ecso911.com/server/rest/services/Hosted/EMS_Polygon/FeatureServer/0"
-)
-ecso911_fire_url = (
-    "https://gis.ecso911.com/server/rest/services/Hosted/Fire_Polygon/FeatureServer/0"
-)
-ecso911_law_url = (
-    "https://gis.ecso911.com/server/rest/services/Hosted/Law_Polygon/FeatureServer/0"
-)
+ecso911_ems_url = "https://gis.ecso911.com/server/rest/services/Hosted/EMS_Polygon_View/FeatureServer/0"
+ecso911_fire_url = "https://gis.ecso911.com/server/rest/services/Hosted/Fire_Polygon_View/FeatureServer/0"
+ecso911_law_url = "https://gis.ecso911.com/server/rest/services/Hosted/Law_Polygon_View/FeatureServer/0"
+
+# fire
+fire_service_base = "https://gisserver.grantspassoregon.gov/server/rest/services/PublicSafety/fire/MapServer/"
+url_range = [2, 1, 0]
+fire_service_urls = expand_urls(fire_service_base, url_range)
 
 
 # forest service wildfire
@@ -446,6 +457,17 @@ fs_wildfire_housing_def = {
 }
 
 # aerial imagery
+aerials_2023_def = {
+    "id": "2023_Grants_Pass_Aerials_2133",
+    "layerType": "ArcGISMapServiceLayer",
+    "opacity": 1,
+    "title": "2023 Imagery (City)",
+    "url": "https://gisserver.grantspassoregon.gov/server/rest/services/Aerials/2023_Grants_Pass_Aerials/MapServer",
+    "visibility": False,
+    "minScale": None,
+    "maxScale": None,
+}
+
 esri_image_def = {
     "id": "World_Imagery_9777",
     "layerType": "ArcGISTiledMapServiceLayer",
@@ -639,6 +661,8 @@ planning_group_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/ArcGIS/rest
 # planning_group_base = "https://gisserver.grantspassoregon.gov/server/rest/services/CommunityDevlp/planning/MapServer/"
 url_range = list(range(5, -1, -1))
 planning_urls = expand_urls(planning_group_base, url_range)
+url_range = [5, 4, 3, 2, 1]
+planning_group = expand_urls(planning_group_base, url_range)
 
 # marijuana and adult use
 # AGOL preferred
@@ -654,10 +678,10 @@ url_range = list(range(19, -1, -1))
 marijuana_permitting_urls = expand_urls(marijuana_permitting_base, url_range)
 
 # agreements and financial
-# agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
-agreements_base = (
-    "https://gisserver.grantspassoregon.gov/server/rest/services/agreements/MapServer/"
-)
+agreements_base = "https://services2.arcgis.com/pc4beVTMEhYHqerq/arcgis/rest/services/agreements/FeatureServer/"
+# agreements_base = (
+#     "https://gisserver.grantspassoregon.gov/server/rest/services/agreements/MapServer/"
+# )
 url_range = list(range(4, -1, -1))
 agreements_urls = expand_urls(agreements_base, url_range)
 # agreements_urls.remove(agreements_urls[0])
@@ -680,6 +704,11 @@ transportation_urls.insert(6, transportation_urls[6])
 transportation_urls.insert(0, odot_railroad_url)
 transportation_urls.insert(0, odot_construction_url)
 transportation_urls.insert(0, odot_traffic_url)
+
+url_range = [16, 15, 14, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+transportation_group = expand_urls(transportation_base, url_range)
+transportation_group.insert(4, county_roads_url)
+transportation_group.insert(0, odot_railroad_url)
 
 # transportation editing
 transportation_editing_base = "https://gisserver.grantspassoregon.gov/server/rest/services/Editing/transportation_editing/FeatureServer/"
@@ -716,6 +745,9 @@ water_editing_urls.insert(4, water_editing_urls[4])
 # copy water pressure zones for billing zones
 water_urls.insert(2, water_urls[2])
 water_editing_urls.insert(1, water_editing_urls[1])
+
+url_range = [11, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+water_wv = expand_urls(water_base, url_range)
 
 
 # stormwater

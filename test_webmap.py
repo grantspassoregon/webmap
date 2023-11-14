@@ -68,6 +68,13 @@ def test_city_basemap(public=False):
     m.city_basemap(test_map, template, internal, public)
 
 
+def test_build(map, portal, gis, public=False):
+    test_map = portal.content.get(map)
+    template = t.build_template(gis)
+    w.clear(test_map)
+    m.city_basemap(test_map, template, portal, public)
+
+
 def test_business_map():
     test_map = gis.content.get(r.STABLE_BUSINESSES)
     template = t.build_template(gis)
@@ -99,6 +106,13 @@ def test_map_def(map):
     test_map = gis.content.get(map)
     map_def = test_map.get_data()
     logging.info(pp.pprint(map_def["operationalLayers"]))
+
+
+def test_web_viewer(public=False):
+    test_map = gis.content.get(r.TEST_CITY_BASEMAP)
+    template = t.build_template(gis)
+    w.clear(test_map)
+    m.web_viewer(test_map, template, internal, public)
 
 
 # def test_new():

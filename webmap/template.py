@@ -76,6 +76,7 @@ def build_template(gis):
     as_builts = gis.content.get(r.TEMPLATE_AS_BUILTS)
     aiannha = gis.content.get(r.TEMPLATE_AIANNHA)
     bia = gis.content.get(r.TEMPLATE_BIA)
+    boundaries_group = gis.content.get(r.TEMPLATE_BOUNDARIES_GROUP)
     businesses = gis.content.get(r.TEMPLATE_BUSINESS)
     cell_towers = gis.content.get(r.TEMPLATE_CELL_TOWERS)
     city_boundaries = gis.content.get(r.TEMPLATE_CITY_BOUNDARIES)
@@ -88,6 +89,8 @@ def build_template(gis):
     ecso911_law = gis.content.get(r.REF_ECSO911_LAW)
     features = gis.content.get(r.TEMPLATE_FEATURES)
     fema_flood = gis.content.get(r.TEMPLATE_FEMA_FLOOD)
+    fema_flood_wv = gis.content.get(r.TEMPLATE_FEMA_FLOOD_WV)
+    fire = gis.content.get(r.TEMPLATE_FIRE)
     hazards = gis.content.get(r.TEMPLATE_HAZARDS)
     historic_cultural = gis.content.get(r.TEMPLATE_HISTORIC_CULTURAL)
     hydric_soils = gis.content.get(r.TEMPLATE_HYDRIC_SOILS)
@@ -104,7 +107,9 @@ def build_template(gis):
     planning = gis.content.get(r.TEMPLATE_PLANNING)
     plss = gis.content.get(r.TEMPLATE_PLSS)
     power_gas = gis.content.get(r.TEMPLATE_POWER_GAS)
+    property = gis.content.get(r.TEMPLATE_PROPERTY)
     schools = gis.content.get(r.TEMPLATE_SCHOOLS)
+    schools_wv = gis.content.get(r.TEMPLATE_SCHOOLS_WV)
     sketch = gis.content.get(r.TEMPLATE_SKETCH)
     sewer = gis.content.get(r.TEMPLATE_SEWER)
     soils = gis.content.get(r.TEMPLATE_SOILS)
@@ -115,8 +120,10 @@ def build_template(gis):
     tourism_parks = gis.content.get(r.TEMPLATE_TOURISM_PARKS)
     traffic = gis.content.get(r.TEMPLATE_TRAFFIC)
     transportation = gis.content.get(r.TEMPLATE_TRANSPORTATION)
+    transportation_wv = gis.content.get(r.TEMPLATE_TRANSPORTATION_WV)
     transportation_editing = gis.content.get(r.TEMPLATE_TRANSPORTATION_EDITING)
     water = gis.content.get(r.TEMPLATE_WATER)
+    water_wv = gis.content.get(r.TEMPLATE_WATER_WV)
     water_editing = gis.content.get(r.TEMPLATE_WATER_EDITING)
     wells = gis.content.get(r.TEMPLATE_OWRD_WELLS)
     wetlands = gis.content.get(r.TEMPLATE_WETLANDS)
@@ -132,6 +139,7 @@ def build_template(gis):
     template.update(build_template_dictionary("as_builts", as_builts))
     template.update(build_template_dictionary("aiannha", aiannha))
     template.update(build_template_dictionary("bia", bia))
+    template.update(build_template_dictionary("boundaries_group", boundaries_group))
     template.update(build_template_dictionary("businesses", businesses))
     template.update(build_template_dictionary("cell_towers", cell_towers))
     template.update(build_template_dictionary("city_boundaries", city_boundaries))
@@ -144,6 +152,8 @@ def build_template(gis):
     template.update(build_template_dictionary("ecso911_law", ecso911_law))
     template.update(build_template_dictionary("features", features))
     template.update(build_template_dictionary("fema_flood", fema_flood))
+    template.update(build_template_dictionary("fema_flood_wv", fema_flood_wv))
+    template.update(build_template_dictionary("fire", fire))
     template.update(build_template_dictionary("hazards", hazards))
     template.update(build_template_dictionary("historic", historic_cultural))
     template.update(build_template_dictionary("hydric_soils", hydric_soils))
@@ -164,7 +174,9 @@ def build_template(gis):
     template.update(build_template_dictionary("planning", planning))
     template.update(build_template_dictionary("plss", plss))
     template.update(build_template_dictionary("power_gas", power_gas))
+    template.update(build_template_dictionary("property", property))
     template.update(build_template_dictionary("schools", schools))
+    template.update(build_template_dictionary("schools_wv", schools_wv))
     template.update(build_template_dictionary("sketch", sketch))
     template.update(build_template_dictionary("sewer", sewer))
     template.update(build_template_dictionary("soils", soils))
@@ -175,10 +187,12 @@ def build_template(gis):
     template.update(build_template_dictionary("tourism_parks", tourism_parks))
     template.update(build_template_dictionary("traffic", traffic))
     template.update(build_template_dictionary("transportation", transportation))
+    template.update(build_template_dictionary("transportation_wv", transportation_wv))
     template.update(
         build_template_dictionary("transportation_editing", transportation_editing)
     )
     template.update(build_template_dictionary("water", water))
+    template.update(build_template_dictionary("water_wv", water_wv))
     template.update(build_template_dictionary("water_editing", water_editing))
     template.update(get_definition("wells", wells))
     template.update(build_template_dictionary("wetlands", wetlands))
@@ -204,7 +218,7 @@ def build_template_dictionary(template_type, template):
             )
         case "agreements":
             template_dict.update(
-                update_layer("agreements", u.agreements_urls, template)
+                get_layer_info(template, "agreements", u.agreements_urls)
             )
         case "as_builts":
             template_dict.update(update_layer("as_builts", u.as_builts_urls, template))
@@ -212,6 +226,10 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layer("aiannha", u.aiannha_urls, template))
         case "bia":
             template_dict.update(update_layers("bia", bia_names, template))
+        case "boundaries_group":
+            template_dict.update(
+                get_layer_info(template, "boundaries_group", u.boundaries_group)
+            )
         case "businesses":
             template_dict.update(
                 get_layer_info(template, "businesses", u.businesses_urls)
@@ -224,8 +242,8 @@ def build_template_dictionary(template_type, template):
             )
         case "deq_dw_source":
             template_dict.update(
-                update_layer(
-                    "deq_dw_source", u.deq_drinking_water_source_urls, template
+                get_layer_info(
+                    template, "deq_dw_source", u.deq_drinking_water_source_urls
                 )
             )
         # case "deq_dw_pcs":
@@ -252,6 +270,12 @@ def build_template_dictionary(template_type, template):
             template_dict.update(
                 update_layer("fema_flood", u.fema_flood_urls, template)
             )
+        case "fema_flood_wv":
+            template_dict.update(
+                get_layer_info(template, "fema_flood_wv", u.fema_flood_wv)
+            )
+        case "fire":
+            template_dict.update(get_layer_info(template, "fire", u.fire_service_urls))
         case "hazards":
             template_dict.update(update_layer("hazards", u.hazards_urls, template))
         case "historic":
@@ -296,9 +320,15 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layers("plss", plss_names, template))
         case "power_gas":
             template_dict.update(update_layer("power_gas", u.power_gas_urls, template))
+        case "property":
+            template_dict.update(get_layer_info(template, "property", u.property_urls))
         case "schools":
             template_dict.update(
                 get_layer_info(template, "schools", u.school_districts_urls)
+            )
+        case "schools_wv":
+            template_dict.update(
+                get_layer_info(template, "schools_wv", u.school_districts_group)
             )
         case "sketch":
             template_dict.update(get_layer_info(template, "sketch", u.sketch_urls))
@@ -314,7 +344,7 @@ def build_template_dictionary(template_type, template):
             template_dict.update(update_layers("street_imagery", [""], template))
         case "tax_parcels":
             template_dict.update(
-                update_layer("tax_parcels", u.tax_parcel_urls, template)
+                get_layer_info(template, "tax_parcels", u.tax_parcel_urls)
             )
         case "tourism_historic":
             template_dict.update(
@@ -332,6 +362,10 @@ def build_template_dictionary(template_type, template):
             template_dict.update(
                 update_layer("transportation", u.transportation_urls, template)
             )
+        case "transportation_wv":
+            template_dict.update(
+                get_layer_info(template, "transportation_wv", u.transportation_group)
+            )
         case "transportation_editing":
             template_dict.update(
                 get_layer_info(
@@ -340,6 +374,8 @@ def build_template_dictionary(template_type, template):
             )
         case "water":
             template_dict.update(update_layer("water", u.water_urls, template))
+        case "water_wv":
+            template_dict.update(get_layer_info(template, "water_wv", u.water_wv))
         case "water_editing":
             template_dict.update(
                 get_layer_info(template, "water_editing", u.water_urls)
