@@ -746,7 +746,7 @@ water_editing_urls.insert(4, water_editing_urls[4])
 water_urls.insert(2, water_urls[2])
 water_editing_urls.insert(1, water_editing_urls[1])
 
-url_range = [11, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+url_range = [11, 9, 7, 6, 5, 4, 3, 2, 1, 0]
 water_wv = expand_urls(water_base, url_range)
 
 

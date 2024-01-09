@@ -6,3 +6,4 @@ tests/__pycache__/*
 __pycache__/*
 webmap/__pycache__/*
 build
+.pypirc
